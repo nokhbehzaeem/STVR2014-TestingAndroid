@@ -1,0 +1,60 @@
+% PRELIMINARIES OF FRAMEWORK SECTION: Currently not a separate sub-section
+
+% Define interaction features
+\begin{mydef}[Interaction feature]
+\label{def:interactionFeature}
+An interaction feature is an action supported by the mobile platform, which enables a human user to interact with a mobile app, using the mobile device and the graphical user-interface (GUI) of the app. Further, an interaction feature is associated with a common sense expectation of how the mobile app should respond to that action. 
+\end{mydef}
+\vspace*{-2ex}
+
+% Natural language explanation of user-interaction features
+Interaction features include actions like rotating a mobile device, general purpose gestures like zooming in/out or scrolling, and actions which start, pause, kill or resume operation of an app, taking its Activity GUI components through various states in their life-cycle. These features were discussed in our bug study. In addition, features like the \textit{Back} or \textit{Up} buttons of the Android platform\footnote{See \url{http://developer.android.com/design/patterns/navigation.html}.} are also valid interaction features. Note that the above definition \textit{excludes} a number of common gestures such as {\small\texttt{click}} or {\small\texttt{longClick}}, or other custom gestures, for which there is no standard expected response from apps; it is completely context and application specific. Since a given interaction feature will have, in general, a standard expected behavior, across apps and different mobile platforms\footnote{Specific apps may of course choose to modify this standard response.}, this provides a general, app agnostic \textit{oracle} for validating an app's response to exercising that feature. Thus, a key component of our approach is authoring such reusable oracles and employing them in interaction feature testing.
+
+% GUI Model and GUI States
+We follow a model-driven approach to generating test-cases for testing interaction features of a given mobile app. The starting point for our technique is a finite state model of the GUI behavior of the app, which is defined as follows.
+
+\begin{mydef}[GUI model]
+\label{def:GUImodel}
+A GUI model of an app is a finite state machine $\mathcal{M}$, denoted by the $4$-tuple $\mathcal{M} = (S, s_0, A, R)$, where $S$ is a finite set of abstract states representing different GUI screens, $s_0 \in S$ is the initial state denoting the app's opening screen, $A$ is a finite set of application specific actions the user may perform in executing the logic of the app, and $R \subseteq S \times A \times S$ is a transition relation describing transitions between states in $S$ in response to user actions from $A$.  
+\end{mydef} 
+\vspace*{-2ex}
+
+%%%%% INCORPORATE THESE POINTS BELOW
+%We identify the following properties for user-interaction features (features for short throughout the paper).
+%\begin{itemize}
+%\item 
+%(1) A user-interaction feature is a way of interacting with the mobile device at the GUI level that is common between apps.
+%\item 
+%(2) There is an app agnostic \emph{oracle} for a feature. Even though it is possible to redefine how an app responds to exercising a feature, there is a common sense of what should happen in most apps.
+%\item 
+%(3) In most cases, features are so app agnostic that they are not explicitly included in GUI models. For instance, what happens after killing or pausing an app is rarely included in the GUI model and is usually inferred from the activity life-cycle.
+%\item 
+%(4) Even though features are usually absent from GUI models, apps have to actually implement feature functionalities and are expected to support features and give the results anticipated by features' oracles.
+%\end{itemize}
+
+% Further explanation of GUI Models, GUI models as directed graphs
+Two GUI screens are represented by the same abstract state in
+$\mathcal{M}$ if and only if they contain the same set of actions on
+the same widgets. The only exception to this is screens showing
+collections of items, such as books, files, songs, transactions,
+\textit{etc.}, where each item supports some set of actions. In this
+case two screens with different (non-zero) numbers of items are
+interpreted as the same state. Thus, the contents of a collection are
+abstracted as empty or non-empty.  Similar notions of GUI states have
+also been used in previous work~\cite{Dynodroid:2013,
+  collider2013}. The set $A$ includes application specific actions
+such as clicks or longClicks, \textit{etc.,} on specific widgets but
+\textit{does not} include platform supported interaction features (e.g., device rotation, \textit{etc.}). We
+believe this is typical of GUI models as well~\cite{YangFASE2013}.
+
+Note that although the visible part of a GUI screen of a mobile app, as viewed on a mobile device, may change by performing an action such as a device rotation, a zoom, or a scrolling action, these apparently different screens still correspond to the same abstract state in the GUI model. We define the notion of a \textit{view}, denoted by the symbols $w$, to represent the visible portion of abstract GUI model states $s$. Thus, a state $s$ can have several views, generated by exercising different available interaction features on $s$. Specifically, we use the notation $\Phi(s, \mathbf{u}, -)$ and $\Phi(s, \mathbf{u}, +)$ to denote respectively, the two different views of state $s$ before and after action (or action sequence) $\mathbf{u}$ was fired, where $\mathbf{u}$ corresponds to an instance of exercising an interaction feature. The view notation provides a relative notion of \textit{time} of sampling states (for their current view), before and after exercising interaction features.
+
+A GUI model $\mathcal{M}(S, s_0, A, R)$ can also be represented as a rooted, labeled directed graph $G = \langle V, E, r, A, \mathcal{L} \rangle$, in a straightforward manner. Here, the nodes $V$ represent the states $S$, the root node $r$ represents initial state $s_0$, edges $E$ represent transitions between states, consistent with transition relation $R$, and the labeling function $\mathcal{L} \colon E \to A$ labels each edge with the action $a \in A$ responsible for the transition. GUI models can either be constructed manually or generated automatically using one of the techniques from a growing body of work on GUI model generation for mobile apps~\cite{AmalfitanoASE2012, Joorabchi:2012:WCRE, YangFASE2013}.
+%to automatically generate tests that exercise features and assert oracles.
+
+% Summarize Overall Approach
+\textbf{Overall Approach:} 
+Our technique generates compact test suites, complete with test oracles, to comprehensively test interaction features of a given mobile app. The approach uses an extensible library $\mathcal{F}$ of reusable and application agnostic feature definitions, described in Section~\ref{sec:featureDefinition}. Given a user provided GUI model of the app we automatically augment this model with feature instances, using the feature definitions in $\mathcal{F}$ (Section~\ref{sec:modelAugmentation}). %using user feedback to customize the features when needed. 
+Then, based on the cost and test adequacy criteria defined in Section~\ref{sec:testSuiteDefinition}, we automatically traverse the augmented model to create compact test sequences (Section~\ref{sec:traversalAlgo}). Finally, we automatically instantiate test oracles in the test sequences to obtain a compact and complete test suite.
+%a complete test suite that tests the user-interaction features of the app. 
+

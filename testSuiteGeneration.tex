@@ -1,0 +1,80 @@
+\Subsection{Feature-based Test Sequence Generation}
+\label{sec:traversalAlgo}
+
+Recall that interaction features are orthogonal to the core logic of the app and their function is typically to help the user navigate or access content on the app by mutating the state of the app's GUI. Further, exercising an interaction feature on a given state has no side effects in terms of the GUI model, \ie the effect of exercising that feature is limited to a single GUI screen and has no impact on the downstream actions. This observation is very important as it allows us to arbitrarily mix and match instances of several features (and their test oracles) in a single test case, as long as it lowers the cost of the test suite, per Definition~\ref{def:costfunction}. Since each instance of every feature is already recorded in our augmented GUI model $G^+$ (servicing the test adequacy criterion of Definition~\ref{def:coverage}), our test generation problem can be stated as follows.
+
+\noindent\textbf{Test suite generation problem:} \textit{Given an augmented GUI model $G^+$ generate a minimum cost test suite such that each golden edge in $G^+$ is covered by at least one test in the suite.}
+
+%\begin{proof}
+%The proof sketch is by reducing the \textit{minimum path cover problem}~\cite{PathCover:NtafosH79} to this problem as follows. Given an instance of the minimum path cover problem, take the given directed graph $G$ and construct a modified $G'$ from it:
+%\begin{enumerate}
+%\item Add a self loop to every vertex and mark it as golden (ensuring that we cover all golden edges if and only if we cover all vertices).
+%\item Add a new root node $r$ and add an edge from $r$ to each vertex of $G$ (accounting for the fact that in the original path cover problem paths need not originate at a starting node, which they do in our case).
+%\end{enumerate}
+%Now we solve our problem on $G'$ with $\alpha = 1$ and $\beta = 0$, thus minimizing the number of $r$-originating paths covering all golden edges, or essentially all vertices, irrespective of path lengths. The answer would be a minimum path cover over $G$.
+%\end{proof}
+
+It can be shown that the above problem is NP-hard, by reducing the \textit{minimum path cover problem}~\cite{PathCover:NtafosH79} to this problem. We omit the detailed proof here for lack of space.
+
+We propose a greedy algorithm for this NP-hard problem. In addition, we introduce two optimizations to further reduce the cost associated with covering features. Algorithm~\ref{alg:traversalAlgo} shows a pseudo-code of the traversal algorithm we propose. The input to this algorithm is the augmented graph model. We use a set to keep track of \emph{covered edges} $CE$ and a stack to record the test sequence. First, on Line~\ref{line:BFS}, we sort the nodes based on their increasing distance from the root using a Breadth First Search (BFS) and keep the sorted list in $L$. For example, we can sort the nodes of Figure~\ref{fig:dotGraph} as $\langle$\emph{mainTimers}, \emph{info}, \emph{preferences}, \emph{donation}, \emph{timerRunning}$\rangle$. Then, working through the list $L$ on Line~\ref{line:loopForL}, we select the next node $s$ that has uncovered outgoing edges (Line~\ref{line:sHasOutgoing}). In our example, the first node in the list with uncovered outgoing edges is \emph{mainTimers} (as we have not yet covered any edges). We use the shortest path from the root to this node (saved through previously performed BFS) as the prefix of all sequences to be generated starting from it. Lines~\ref{line:prefixBeg} to \ref{line:prefixEnd} iterate through the shortest path and (1) mark edges as visited by adding them to $CE$, and (2) push them onto $stack$. The rationale behind using such a prefix is to minimize the cost associated with taking edges to get to a given node, where the exploration for uncovered golden edges begins. % In the case of \emph{mainTimers}, the prefix would be empty as \emph{mainTimers} is the root of the graph.
+
+%\lstinputlisting[caption=Traversal Algorithm in Java.,label=lst:traversalAlgo]{listings/traversalAlgo.java}
+\input{traversalAlgoPseudoCode}
+
+Then, using $c$ as a pointer to the \emph{current} node, which is initially set to $s$, on Line~\ref{line:cHasOutgoing} we pick an uncovered edge going out of $c$. We take this edge, mark it as covered (Line~\ref{line:coverIt}), push it onto $stack$ (Line~\ref{line:pushIt}), and update $c$ to the destination of this edge accordingly (Line~\ref{line:updateC}). Once we get to a node that has no uncovered outgoing edge, the current test sequence is complete and we set $stop$ to {\small\texttt{True}} on Line~\ref{line:stopToTrue}. The current $stack$ makes one test sequence and we continue by generating more sequences and adding them to $T$ which is the test suite and is the output of this algorithm. For instance, the first test sequence that is generated is shown as $T_0$ under \emph{No Optimization} in Table~\ref{tab:tests}. This Table displays the test suite our greedy algorithm generates for the simplified model of Kitchen Timer. The test suite has $7$ tests at a total cost of $34$, with $\alpha$ and $\beta$ both set to $1$ in the cost function.
+
+\begin{table}
+\vspace*{-2ex}
+\Caption{Test Sequences for Figure~\ref{fig:dotGraph}.}
+\label{tab:tests}
+\begin{center}
+\begin{tabular}{@{}l@{}l@{}}
+\toprule
+\textbf{No Optimization}\\
+\midrule
+\multicolumn{2}{@{}l@{}}{
+$T_0$ = $\langle$hoursUp, hoursDown, minutesUp, minutesDown, secondsUp, secondsDown,}\\
+\multicolumn{2}{@{}l@{}}{
+infoMenu, textBack, prefMenu, Back, donateMenu, textNo, startStop, startStop, DR$\rangle$}\\
+$T_1$ = $\langle$infoMenu, Back$\rangle$&
+$T_2$ = $\langle$infoMenu, DR$\rangle$\\
+$T_3$ = $\langle$prefMenu, DR$\rangle$&
+$T_4$ = $\langle$donateMenu, Back$\rangle$\\
+$T_5$ = $\langle$donateMenu, DR$\rangle$&
+$T_6$ = $\langle$startStop, DR$\rangle$\\
+\#Tests = 7, Cost(T) = 34\\
+\midrule
+\textbf{Prioritization Optimization On}\\
+\midrule
+\multicolumn{2}{@{}l@{}}{
+$T_0$ = $\langle$DR, hoursUp, hoursDown, minutesUp, minutesDown, secondsUp, secondsDown,}\\
+\multicolumn{2}{@{}l@{}}{
+infoMenu, Back, prefMenu, Back, donateMenu, Back, startStop, DR, startStop$\rangle$}\\
+$T_1$ = $\langle$infoMenu, DR, textBack$\rangle$&
+$T_2$ = $\langle$prefMenu,	DR$\rangle$\\
+$T_3$ = $\langle$donateMenu, DR, textNo$\rangle$\\
+\#Tests = 4, Cost(T) = 28\\
+\midrule
+\textbf{Prioritization and Truncation Optimizations On}\\
+\midrule
+\multicolumn{2}{@{}l@{}}{
+$T_0$ = $\langle$DR, hoursUp, hoursDown, minutesUp, minutesDown, secondsUp, secondsDown,}\\
+\multicolumn{2}{@{}l@{}}{
+infoMenu, Back, prefMenu, Back, donateMenu, Back, startStop, DR$\rangle$}\\
+$T_1$ = $\langle$infoMenu, DR$\rangle$&
+$T_2$ = $\langle$prefMenu,	DR$\rangle$\\
+$T_3$ = $\langle$donateMenu, DR$\rangle$\\
+\#Tests = 4, Cost(T) = 25\\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace*{-0.1in}
+\end{table}
+
+We introduce two optimizations to augment our basic traversal algorithm. The first optimization called \textit{prioritization}, prioritizes golden edges whenever there are both golden and regular (non-golden) uncovered edges going out of a node, since the goal of the traversal algorithm is to cover golden edges. To implement this optimization, the method $outGoing()$ in Algorithm~\ref{alg:traversalAlgo} returns golden edges first. Table~\ref{tab:tests} displays the output of the traversal algorithm with this optimization incorporated. For example, at the beginning of \emph{$T_0$} under \emph{Prioritization Optimization On}, when the golden edge \emph{DR} is available, it is taken before any other edge. This optimization makes the test suite smaller and decreases the cost from $34$ to $28$.
+
+The second optimization, called \textit{truncation}, uses the observation that a test can be truncated after the last golden edge it covers, and deleted if it covers no golden edges. Truncation is applicable in a post-processing phase on any test suite. Table~\ref{tab:tests} shows the result of combining both optimizations (applying truncation on the result of prioritization optimization) which makes the cost of the test suite go down to 25.
+
+Once test sequences are generated, we insert oracles by augmenting test sequences in two ways.
+Firstly, we automatically add appropriate instrumentation before and after relevant actions in test sequences, to dynamically record %details of the app 
+the current view of each GUI state, as the test is being run. Secondly, we automatically instantiate oracles $O_f$ from the feature definitions to assert checks on the state views recorded by the instrumentation.

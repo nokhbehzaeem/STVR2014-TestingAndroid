@@ -1,0 +1,33 @@
+\begin{table}[t!]
+\vspace*{-3ex}
+\centering
+\Caption{Compactness of Generated Test Suites.}
+\label{table:algoEffectiveness}
+{
+\begin{tabular}{@{}lr@{}rrr@{}rrr@{}rrr@{}rrr@{}rr@{}}
+\toprule
+&&\multicolumn{11}{c}{\bf{Our Algorithm}}
+&&\multicolumn{2}{c}{\bf{DFS}}\\
+&&\multicolumn{2}{c}{\bf{Basic}}
+&&\multicolumn{2}{c}{\bf{+ Trunc.}}
+&&\multicolumn{2}{c}{\bf{+ Prior.}}
+&&\multicolumn{2}{c}{\bf{+ Both}}
+\\
+\cmidrule{3-4}
+\cmidrule{6-7}
+\cmidrule{9-10}
+\cmidrule{12-13}
+\cmidrule{15-16}
+\bf{Application}&&\begin{sideways}\bf{\#Tests}\end{sideways}&\begin{sideways}\bf{Cost}\end{sideways}&&\begin{sideways}\bf{\#Tests}\end{sideways}&\begin{sideways}\bf{Cost}\end{sideways}&&\begin{sideways}\bf{\#Tests}\end{sideways}&\begin{sideways}\bf{Cost}\end{sideways}&&\begin{sideways}\bf{\#Tests}\end{sideways}&\begin{sideways}\bf{Cost}\end{sideways}&&\begin{sideways}\bf{\#Tests}\end{sideways}&\begin{sideways}\bf{Cost}\end{sideways}\\
+\midrule
+\textit{Notepad}&&15&73&&11&59&&12&65&&8&44&&35&114\\
+\textit{OpenSudoku}&&13&85&&10&67&&9&67&&7&51&&30&138\\
+\textit{Nexes Manager}&&38&200&&24&149&&26&174&&15&127&&97&354\\
+\midrule
+\textit{VuDroid}&&8&41&&7&38&&7&40&&6&36&&17&57\\
+\textit{Kitchen Timer}&&14&113&&14&113&&11&105&&8&75&&70&310\\
+\textit{K9Mail}&&30&228&&25&196&&21&187&&16&148&&76&490\\
+\bottomrule
+\end{tabular}
+}
+\end{table}

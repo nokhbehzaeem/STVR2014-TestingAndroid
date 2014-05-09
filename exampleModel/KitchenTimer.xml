@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <!-- states -->
+    
+    <state label="mainTimers" activity=""/>
+    <state label="info" activity=""/>
+   	<state label="preferences" activity=""/>
+   	<state label="donation" activity=""/>
+  	<state label="timerRunning" activity=""/>
+    	
+   	<!-- events -->
+   	
+	<event label="hoursUp" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="img"/>
+			<descriptor property="id" value="0"/>
+		</target>
+	</event>
+	
+	<event label="hoursDown" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="img"/>
+			<descriptor property="id" value="1"/>
+		</target>
+	</event>
+	
+	<event label="minutesUp" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="img"/>
+			<descriptor property="id" value="2"/>
+		</target>
+	</event>
+	
+	<event label="minutesDown" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="img"/>
+			<descriptor property="id" value="3"/>
+		</target>
+	</event>
+	
+	<event label="secondsUp" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="img"/>
+			<descriptor property="id" value="4"/>
+		</target>
+	</event>
+	
+	<event label="secondsDown" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="img"/>
+			<descriptor property="id" value="5"/>
+		</target>
+	</event>
+	
+	<event label="infoMenu" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="menuItem"/>
+			<descriptor property="text" value="Info"/>
+		</target>
+	</event>
+	
+	<event label="textBack" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="text"/>
+			<descriptor property="text" value="Back"/>
+		</target>
+	</event>
+	
+	<event label="prefMenu" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="menuItem"/>
+			<descriptor property="text" value="Preferences"/>
+		</target>
+	</event>
+	
+	<event label="donateMenu" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="menuItem"/>
+			<descriptor property="text" value="Donate"/>
+		</target>
+	</event>
+	
+	<event label="textNo" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="text"/>
+			<descriptor property="text" value="No"/>
+		</target>
+	</event>
+	
+	<event label="startStopButton" type="user">
+		<action  type="click"/>      
+		<target>
+			<descriptor property="type" value="button"/>
+			<descriptor property="id" value="0"/>
+		</target>
+	</event>
+	
+	<!-- golden edge events -->
+	
+	<event label = "Back" type = "user">
+		<action type = "golden"/>   
+		<target>
+			<descriptor property = "type" value = "back"/>
+		</target>
+	</event>  	
+	
+	<event label = "Back" type = "user">
+		<action type = "golden"/>   
+		<target>
+			<descriptor property = "type" value = "backBack"/>
+		</target>
+	</event>
+	
+	<event label = "rotate" type = "user">
+		<action type = "golden"/>   
+		<target>
+			<descriptor property = "type" value = "rotateRotate"/>
+		</target>
+	</event>
+	
+	<!-- transitions -->
+	
+	<transition source = "mainTimers" sink = "mainTimers" event = "hoursUp"/>
+	<transition source = "mainTimers" sink = "mainTimers" event = "hoursDown"/>
+	<transition source = "mainTimers" sink = "mainTimers" event = "minutesUp"/>
+	<transition source = "mainTimers" sink = "mainTimers" event = "minutesDown"/>
+	<transition source = "mainTimers" sink = "mainTimers" event = "secondsUp"/>
+	<transition source = "mainTimers" sink = "mainTimers" event = "secondsDown"/>
+	
+	<transition source = "mainTimers" sink = "info" event = "infoMenu"/>
+	<transition source = "info" sink = "mainTimers" event = "textBack"/>
+	
+	<transition source = "mainTimers" sink = "preferences" event = "prefMenu"/>
+	
+	<transition source = "mainTimers" sink = "donation" event = "donateMenu"/>
+	<transition source = "donation" sink = "mainTimers" event = "textNo"/>
+	
+	<transition source = "mainTimers" sink = "timerRunning" event = "startStopButton"/>
+	<transition source = "timerRunning" sink = "mainTimers" event = "startStopButton"/>
+	
+	<!-- golden edge transitions -->
+	
+	<transition source = "info" sink = "mainTimers" event = "Back"/>
+	<transition source = "preferences" sink = "mainTimers" event = "Back"/>
+	<transition source = "donation" sink = "mainTimers" event = "Back"/>
+	
+	<transition source = "mainTimers" sink = "mainTimers" event = "rotate"/>
+	<transition source = "info" sink = "info" event = "rotate"/>
+	<transition source = "preferences" sink = "preferences" event = "rotate"/>
+	<transition source = "donation" sink = "donation" event = "rotate"/>
+	<transition source = "timerRunning" sink = "timerRunning" event = "rotate"/>
+</model>

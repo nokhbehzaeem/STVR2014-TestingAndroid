@@ -1,0 +1,2 @@
+Definition 4 (coverage) could be cleaner and use G notation (instead of the notation of the state machine).
+Tests given in the paper does not find the bug discussed in the example, as they do not set an initial timer value.

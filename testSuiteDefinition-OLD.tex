@@ -1,0 +1,38 @@
+\subsection{Test Suite Definition}
+\label{sec:testSuiteDefinition}
+
+\mukul{This section should cover defintion of a test-case, what it means for a feature to be covered by test-cases and our cost function for a test-suite. The last one is currently in the next sub-section and could potentially stay there depending on how the overall section reads.}
+
+%\subsection{Features and GUI Models of Apps}
+%\label{sec:guimodels}
+
+A \emph{graph traversal algorithm} takes a graphical model of the app, and traverses it to provide sequences of actions for tests. A test is a sequence of actions (a sequence of edges in $G$, i.e. a path) starting at the initial state $r$. Each action in a test is possibly followed by an oracle check. Therefore a test can be represented as $\langle a_1, o_1, \dots, a_n, o_n \rangle$. $a_i$ is any action (including those that exercise features) allowed by the app's GUI. $o_i$ is either an oracle check or no operation. We assume that oracle checks are side effect free, i.e., they do not change the state of the app.
+
+
+%\footnote{Note the difference between all oracles ($o_i$'s) being side effect free and only some actions ($a_i$'s) keeping the app in the same state. Oracles only assert properties, while actions do manipulate the state, but they happen to bring it to the original state in case of self loop golden edges.} 
+
+
+In traversing the GUI graph model, actions that exercise features ($A_f$'s) correspond to edges that we particularly want to cover. We call these edges \emph{golden}. Three categories of golden edges are imaginable:
+\begin{enumerate}
+\item Self loop golden edges (e.g., double rotation, killing and restarting, pausing and resuming, opening and closing menus, zooming in or out, and scrolling). Self loop golden edges correspond to features that do not change the state of the app.
+\item Golden edges to previously seen states (e.g., Back button).
+\item General golden edges to arbitrary states (e.g., Up functionality).
+\end{enumerate}
+
+
+%\subsection{Features As Test Adequacy Criteria}
+%\label{sec:featuresAsCriteria}
+
+
+In order to design a traversal algorithm that generates thorough and compact tests suites, it is useful to first define the target test adequacy criteria. Test adequacy criteria identify what a thorough test suite looks like, and hence serve as the cornerstone of the entire testing framework.
+
+Mobile apps are intrinsically different from traditional programs in various ways, which open up the possibility for new and complementary test adequacy criteria. Introduction of new adequacy criteria, in addition to traditional criteria like code coverage, is justified by multiple reasons. First, the bug study revealed that many bugs in mobile apps are errors of omission, where the programmer incorrectly assumes that the underlying operating system takes care of a functionality of the app, such as rotation. Code coverage does not find errors of omission, because it emphasizes on covering the \emph{existing code}. Secondly, it is very hard to co-relate auto-generated test cases based on covering a line of code to an appropriate test oracle. In fact, attempting to cover a specific line of code is typically not the way testers write test cases. Instead, test cases are written based on high level behavior of the app, e.g., use cases. The third drawback of setting code coverage as the only goal of test generation is that when coverage is not 100\%, which is often the case, there is no prioritization of what is left out, and crucial pieces of behavior may unknowingly be left untested. 
+
+For event-driven systems such as mobile apps, path coverage and event-flow coverage~\cite{memon2001coverage} (which directly represent event sequences) are more important than line or branch coverage, but the event sequence space can be large if not unbounded. As a result, we need a criterion for choosing event sequences to test. We set the goal of testing user-interaction features (at all states were they are applicable) as test coverage criteria. Our tool automatically augments GUI models with golden edges that correspond to features and improves the model by receiving user feedback. Then it uses the augmented model for test generation.
+
+ Here we use coverage of golden edges as test adequacy criteria as follows.
+
+\begin{mydef}
+\label{def:coverage}
+A test suite $T$ covers a feature $f$ if $\forall s \in S_f: \exists t \in T, \exists j, k > j$ such that $\langle a_1, \dots, a_j \rangle$ takes the app from the root to state $s$ and $\langle a_{j+1}, \dots, a_k \rangle = A_f$ and $o_k = O_f$.
+\end{mydef}

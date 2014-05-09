@@ -1,0 +1,38 @@
+\begin{algorithm}[t]
+\begin{footnotesize}
+  \DontPrintSemicolon
+  \SetAlFnt{\scriptsize\scriptfont}  
+  \SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+  \SetKwFunction{Union}{Union}\SetKwFunction{FindCompress}{FindCompress}
+  \SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}  
+  \caption{Traversal Algorithm}\label{alg:traversalAlgo}
+  \Input{$G^+ = \langle V, E^+, r, A^+, \mathcal{L}^+ \rangle$: Augmented GUI model of app}
+  \Output{$T$: Test Suite}
+  \BlankLine
+  \Begin{
+  		$CE \leftarrow \emptyset$\;
+  		$stack \leftarrow \emptyset$\;
+  		$L \leftarrow \mathit{sortWithBFS}(G^+)$\;\nllabel{line:BFS}
+  		\ForEach{$s \in L$}{\nllabel{line:loopForL}
+  			\While{$\exists (s,y) \in outGoing(s), s.t. (s,y) \in E-CE$}{\nllabel{line:sHasOutgoing}
+  				\ForEach{$e \in shortestPathBFS(r,s)$}{\nllabel{line:prefixBeg}
+  					$stack.push(e)$\;
+  					$CE \leftarrow CE \cup \{e\}$\;
+  				}\nllabel{line:prefixEnd}
+  				$c \leftarrow s$\;
+  				$stop \leftarrow false$\;
+  				\While{$!stop$}{\nllabel{line:loopForTraversalBeg}
+  					\If{$\exists (c,v) \in outGoing(c), s.t. (c,v) \in E-CE$}{\nllabel{line:cHasOutgoing}
+  						$CE \leftarrow CE \cup \{(c,v)\}$\;\nllabel{line:coverIt}
+  						$stack.push((c,v))$\;\nllabel{line:pushIt}
+  						$c \leftarrow v$\;\nllabel{line:updateC}
+  					}\lElse{$stop \leftarrow true$\;\nllabel{line:stopToTrue}}
+  				}\nllabel{line:loopForTraversalEnd}
+  				$T \leftarrow T \cup stack$\;
+  				$stack.clear()$\;
+  			}
+  		}
+  		\Return{$T$}\;
+	}
+\end{footnotesize}  
+\end{algorithm}

@@ -1,0 +1,101 @@
+\Section{Related Work}
+\label{relatedwork}
+
+%% The oracle problem in software testing: specialized oracles and automatic oracles
+Our work attempts to address the classic oracle
+problem~\cite{Oracle:Howden78,Weyuker80}, in the context of mobile
+apps. In practice, test oracles are typically specified manually,
+often at the expense of substantial time and effort. There is a rich
+body of work that aims to alleviate this long-standing problem by
+automatically generating oracles. Software specification mining or
+model inference techniques are often used for this purpose. A
+comprehensive survey of API property inference techniques by Robillard
+et al. describes many of these
+techniques~\cite{robillard13tse}. Automated oracle generation
+techniques usually generate general purpose oracles for functional
+testing; they are not specific to any platform or class of software
+applications or any aspects of software behavior. However, a recent
+empirical study by Nguyen et al. on the cost and effectiveness of
+automated oracles concludes that their false positive rate is often
+prohibitively high for practical use~\cite{Nguyen:2013}.
+
+%% Our work: Specialized oracles
+Our proposed technique does not automatically generate general purpose
+oracles but rather falls into a related body of work that uses
+manually created oracles based on domain specific knowledge, that are
+appropriately \textit{instantiated} during testing and used to test
+very specific, sometimes non-functional, aspects of software
+behavior. For example, the \textsc{Toddler} tool uses a hand-crafted
+oracle that detects repetitive memory access patterns in loops to
+identify performance bugs in software~\cite{toddler:ICSE2013}.  Our
+previous work used differential testing~\cite{McKeeman1998} for oracle
+automation in the context of testing web browser
+implementations~\cite{ZaeemKhurshid2012} as well as detecting
+%the \textsc{X-pert} tool detects 
+cross-browser errors in web applications~\cite{xpert:ICSE2013}, \ie
+discrepancies in web application behavior across different web
+browsers, using test oracles specifically designed for these
+domain-specific applications of differential testing.
+%a test oracle specifically designed for this aspect of differential
+%testing of web applications.
+Our work in this paper
+exploits characteristics of mobile apps and the mobile platform to
+design oracles for testing an important class of user-interface
+features of mobile apps.  Hu et al. also employ a specialized oracle
+for testing Android mobile apps, which implements and checks the
+Activity life-cycle
+specification\footnote{\url{http://developer.android.com/training/basics/activity-lifecycle/index.html}}
+for Android apps~\cite{Hu:2011:AST}.  However, this is one single
+oracle, whereas our approach proposes an extensible framework that
+spans a whole class of properties -- user-interaction features.
+
+%% Automated test sequence generation for mobile apps
+There is a growing body of research focused on automated testing of mobile applications. The proposed techniques span the complete gamut of technologies from random testing~\cite{Hu:2011:AST,Dynodroid:2013}, to symbolic-execution-based test-case generation~\cite{AnandFSE2012, MirzaeiJPF2012}, model-based testing, combinatorial testing, and combinations thereof~\cite{Nguyen:2012:ISSTA, collider2013}. However, the emphasis here is on generating test sequences to maximize code coverage, for the purpose of functional testing. The oracle problem is not directly addressed in these papers. It is implicit that the oracles would either be manually specified or use the simple oracle corresponding to catastrophic failure when the application crashes, hangs or otherwise throws an exception. By contrast, the focus of our approach is precisely to address the oracle problem, for a class of non-functional and platform-specific features of mobile apps. 
+
+Our approach to test sequence generation falls under the broad area of model-based testing. The model may be manually specified or automatically extracted from the application under test. In fact there is a rich and active body of work on reverse-engineering such models from the user-interface of GUI applications~\cite{MemonWCRE2003}, web applications~\cite{Mesbah:2012:TWEB}, and more recently, mobile applications~\cite{AmalfitanoASE2012, Joorabchi:2012:WCRE, YangFASE2013}. However, our approach is independent of the method used to produce the model and is therefore orthogonal to these techniques.
+
+The aim of model-based test sequence generation is to extract a suite
+of concrete test cases based on the behavior represented in the
+model. Most techniques in this category do this by heuristically
+solving some variant of the NP-Hard \textit{minimum path cover
+  problem}~\cite{PathCover:NtafosH79}, typically guided by some
+supporting analysis and test suite sufficiency criteria. Memon et
+al. propose several test adequacy criteria for GUI testing based on
+coverage of events and event-sequences in the GUI
+model~\cite{memon2001coverage}. Arlt et al. use a lightweight static
+analysis to compute data dependencies between event-handlers of a GUI
+application and use that to guide the choice of test sequences from
+the GUI model~\cite{Arlt:2012:ISSRE}. Ganov et al., on the other hand,
+focus on the problem of generating suitable values for the input
+parameters of abstract test sequences extracted from a GUI model and
+employ symbolic execution to compute these parameter
+values~\cite{Ganov:2009:ICFEM}. Nguyen et al.  address the same
+problem by using combinatorial testing techniques to embed
+user-specified data values into abstract test
+sequences~\cite{Nguyen:2012:ISSTA}. The aim of all the above
+techniques is functional testing of the application and, more
+specifically, to extract test cases which maximize coverage of the
+application code. By contrast, our test sequence generation is
+intended to exhaustively exercise a set of platform-specific
+user-interaction features. This leads to different test targets,
+cost-functions and ultimately a different set of model traversal
+algorithms than those by pure functional testing approaches.
+%\remark{Should we mention that we target errors of omission while code-coverage based approaches do not?}
+%Our coverage criteria bears similarities with using states of a finite state machine~\cite{shehady1997method} or transitions between them~\cite{belli2001finite} as coverage criteria. Our work, however, is different in that we aim to cover transitions that are originally \emph{absent} from the GUI model, since, as discussed in Section~\ref{framework}, user-interaction features are usually excluded from such models to curb state space explosion.
+
+ 
+
+%This paper draws from the following broad areas of research.
+%\begin{itemize}
+%	\item \textbf{Model Generation}: GUITAR~\cite{MemonWCRE2003}, Crawljax~\cite{Mesbah:2012:TWEB}, AndroidRipper~\cite{AmalfitanoASE2012}, iOSCrawler~\cite{Joorabchi:2012:WCRE}, ORBIT~\cite{YangFASE2013}.
+%	\item \textbf{Model-based Test Generation}: Selection of test sequences based on a model: \cite{Arlt:2012:ISSRE}, \cite{Nguyen:2012:ISSTA}, \cite{Ganov:2009:ICFEM}, \cite{Takala:2011}.
+%	\item \textbf{Testing of Mobile Software}: Using random testing~\cite{Hu:2011:AST}, symbolic execution~\cite{AnandFSE2012}, \cite{MirzaeiJPF2012}.
+%	\item \textbf{Oracles for Software Testing}: First introduced in \cite{Oracle:Howden78} and developed in \cite{Weyuker80}. Different methods of constructing oracles: from program documentation~\cite{Peters:ISSTA94}, from method post-conditions~\cite{postCondOracle:Meyer09} or using statistical methods~\cite{StatOracle:Mayer04}.  
+%\end{itemize}
+
+
+
+
+
+
+

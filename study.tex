@@ -1,0 +1,117 @@
+\Section{Bug Study}
+\label{study}
+
+
+%Despite all the progress made to automate testing, mobile apps still suffer from a range of bugs. The presence of bugs, in addition to inherent differences between mobile apps and traditional programs, motivated us to study the nature of bugs in mobile apps to develop more targeted and customized automated testing strategies for them. 
+We conducted a bug study on $\NumBugsStudy$ bugs drawn from $\NumAppsStudy$ open-source Android applications. The aim was to identify opportunities for automatically generating test cases, that include test oracles, by focusing on bugs specific to mobile apps and by exploiting domain knowledge of the mobile platform.
+%Using this study, we identified several challenging aspects of mobile apps, with a focus on open-source Android apps, in order to craft a customized testing strategy that suits mobile apps and more effectively finds bugs in them.
+
+The $\NumAppsStudy$ open-source Android apps we selected %mostly form Google Code\footnote{https://code.google.com}. 
+included $6$ apps studied in previously published work on automated testing for mobile apps~\cite{Hu:2011:AST,AmalfitanoASE2012,Nguyen:2012:ISSTA}, a further $6$ apps selected from the open source repository Google Code, and the \textit{Notepad} sample app provided for educational purposes by the official Android website (also studied in previous work~\cite{Nguyen:2012:ISSTA}). Table~\ref{tab:studySubjects} lists the name, stated function, and source for each of the $\NumAppsStudy$ subjects.
+
+%To minimize threats to validity, we first considered apps studied in previous published work~\cite{Hu:2011:AST,AmalfitanoASE2012,Nguyen:2012:ISSTA}: CMIS\footnote{https://code.google.com/p/android-cmis-browser} is a CMIS browser, Android Delicious\footnote{https://code.google.com/p/android-delicious-bookmarks} is a social bookmarking application, OpenSudoku\footnote{https://code.google.com/p/opensudoku-android} is a Sudoku game, MonolithAndroid\footnote{https://code.google.com/p/monolithandroid} (renamed to Robotic Space Rock) is a 3D game, WordPress\footnote{http://android.trac.wordpress.org} is a blogging tool, and K9Mail\footnote{https://code.google.com/p/k9mail} is an email client. 
+
+%% Test Subject Selection
+Our aim was to choose test subjects from a diverse set of application categories and functions. The $6$ apps CMIS, Delicious, OpenSudoku, MonolithAndroid, Wordpress, and Nexes Manager, chosen from previously published work, reflect this intention. Further, we applied the following five additional criteria to choose the $6$ apps from open source repositories: (1) popularity: a minimum ranking of 3.5 out of 5 on Google Play, 
+(2) high number of active installations: a minimum of $50{,}000$, (3) having active development communities: the latest version of the source of the application should have been downloaded at least $1000$ times, (4) rich database of reported issues: at least $25$ reported issues, and (5) reproducible defects: the app should have at least some defects reproducible on a standard Android emulator. Similar criteria have been used in previous studies of Android apps~\cite{Hu:2011:AST}, albeit for somewhat different purposes. By manually browsing Google Code with the above selection protocol we selected the $6$ apps VuDroid, Kitchen Timer, Dolphin Player, AnkiDroid, Shuffle, and  K9Mail which have on average a ranking $4.3$ out of $5$, $500{,}000$ active installations, $10{,}700$ downloads, and $1{,}400$ reported issues. 
+
+%We then diversified the categories of apps while choosing open-source popular apps (aiming for a minimum ranking of 3.5 out of 5). We considered 20 other apps selected randomly from Google Code, manually filtered out apps for which we could not reproduce bugs, and selected the followings: VuDroid\footnote{https://code.google.com/p/vudroid} is a PDF viewer, Kitchen Timer\footnote{https://code.google.com/p/kitchentimer} is a timer, Dolphin Player\footnote{https://code.google.com/p/dolphin-player} is a media player, AnkiDroid\footnote{https://code.google.com/p/ankidroid} is a flashcard reviewing application, Shuffle\footnote{https://code.google.com/p/android-shuffle} is an organizational tool, and Nexes\footnote{https://github.com/nexes/Android-File-Manager} is a file manager. Furthermore, we used Notepad\footnote{http://developer.android.com/tools/samples/index.html}, a sample app used for educational purposes by the official Android website.
+
+\begin{table}
+\vspace*{-2ex}
+\Caption{Subjects for Bug Study}
+\label{tab:studySubjects}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{App} & \textbf{Function} & \textbf{Source} \\
+\midrule
+\textit{Notepad} &  Note Making Tool & \url{developer.android.com/tools/samples}\\
+\textit{CMIS} & CMIS Browser & \url{gc/android-cmis-browser} \\
+\textit{Delicious} & Social Bookmarking & \url{gc/android-delicious-bookmarks} \\
+\textit{OpenSudoku} & Sudoku Game & \url{gc/opensudoku-android} \\
+\textit{MonolithAndroid} & 3D Game & \url{gc/monolithandroid} \\
+\textit{Wordpress} & Blogging Tool & \url{android.trac.wordpress.org} \\
+\textit{Nexes Manager} & File Manager & \url{github.com/nexes/Android-File-Manager} \\
+\midrule
+\textit{VuDroid} & PDF Viewer & \url{gc/vudroid} \\
+\textit{Kitchen Timer} & Timer & \url{gc/kitchentimer} \\
+\textit{Dolphin Player} & Media Player & \url{gc/dolphin-player} \\
+\textit{AnkiDroid} & Flashcard Review & \url{gc/ankidroid} \\
+\textit{Shuffle} & Personal Organizer & \url{gc/android-shuffle} \\
+\textit{K9Mail} & Email Client & \url{gc/k9mail} \\
+\bottomrule
+\end{tabular}
+\end{center}
+gc: \url{https://code.google.com/p}
+\end{table}
+
+
+\begin{table*}[t!]
+\vspace*{-4ex}
+\Caption{Categorization of Bugs.}
+\label{tab:bugstudy}
+\centering
+\begin{tabular}{llllllllllllllllllllllll}
+\toprule
+\textbf{Group$\rightarrow$}&\multicolumn{9}{c}{\textbf{Basic Oracles}}&&\multicolumn{4}{c}{\textbf{App Agnostic Oracles}}&&\multicolumn{7}{c}{\textbf{App Specific Oracles}}&\\
+\cmidrule{2-10}\cmidrule{12-15} \cmidrule{17-23}
+\textbf{Category} $\rightarrow$&\begin{sideways}\textbf{Loading Lib.}\end{sideways}&\begin{sideways}\textbf{Third Party Lib.}\end{sideways}&\begin{sideways}\textbf{Uncaught Exception}\end{sideways}&\begin{sideways}\textbf{Key Signing}\end{sideways}&\begin{sideways}\textbf{Incompatibility}\end{sideways}&\begin{sideways}\textbf{Memory}\end{sideways}&\begin{sideways}\textbf{Busy Resource}\end{sideways}&\begin{sideways}\textbf{SQL}\end{sideways}&\begin{sideways}\textbf{Infinite Loop}\end{sideways}&&\begin{sideways}\textbf{Rotation}\end{sideways}&\begin{sideways}\textbf{Activity Life-Cycle}\end{sideways}&\begin{sideways}\textbf{Gestures}\end{sideways}&\begin{sideways}\textbf{Time Zone}\end{sideways}&&\begin{sideways}\textbf{Input Handling}\end{sideways}&\begin{sideways}\textbf{Settings}\end{sideways}&\begin{sideways}\textbf{Showing Progress}\end{sideways}&\begin{sideways}\textbf{Visual Appearance}\end{sideways}&\begin{sideways}\textbf{Foreign Languages}\end{sideways}&\begin{sideways}\textbf{Widget}\end{sideways}&\begin{sideways}\textbf{Website Connection}\end{sideways}&\begin{sideways}\textbf{Application Logic}\end{sideways}\\
+\midrule
+\textit{Notepad}&&&&&&&&&&&&&&&&&&&&&&&\\
+\textit{CMIS}&&&4&&&&1&1&&&&&&&&&&&&&&2&2\\
+\textit{Delicious}&&&1&&&&&&&&&&&&&&&1&1&1&&&4\\
+\textit{OpenSudoku}&&1&&&&&&&&&&1&&&&1&2&&&3&&&2\\
+\textit{MonolithAndroid}&&&&1&1&1&&&&&&1&&&&&1&&1&&&&\\
+\textit{WordPress}&&&3&&&&&&1&&&1&&1&&&&&&&1&1&2\\
+\textit{Nexes Manager}&&&&&&&&&&&&&&&&&&&&&&&2\\
+\midrule
+\textit{VuDroid}&1&&3&1&&&&&&&2&&1&&&&&&1&&&&1\\
+\textit{Kitchen Timer}&&&1&&&&&&&&2&1&1&&&&2&&&&&&3\\
+\textit{Dolphin Player}&1&&&&1&1&1&&&&&&&&&&&&2&1&&&3\\
+\textit{AnkiDroid}&&&2&&&&&1&&&1&&1&&&&1&&2&&&&2\\
+\textit{Shuffle}&&&1&&&&1&&1&&&&&1&&&&&&&1&2&3\\
+\textit{K9Mail}&&1&&&&&&&&&&&1&&&3&1&1&&&&&3\\
+\midrule
+\textbf{Total}& \textbf{2} & \textbf{2} & \textbf{15} & \textbf{2} & \textbf{2} & \textbf{2} & \textbf{3} & \textbf{2} & \textbf{2} && \textbf{5} & \textbf{4} & \textbf{4} & \textbf{2} && \textbf{4} & \textbf{7} & \textbf{2} & \textbf{7} & \textbf{5} & \textbf{2} & \textbf{5} & \textbf{27} \\
+\bottomrule
+\end{tabular}
+\vspace*{-4ex}
+\end{table*}
+
+%% Bug selection
+Generally, only a small fraction of issues logged in the bug repository of an app are true, reproducible bugs. Many of them cannot be reproduced and
+still others are merely feature requests. To select bugs for further investigation, for each test subject we manually examined each issue logged in
+its repository till we had $10$ reproducible bugs (except for Delicious, MonolithAndroid, and Nexes, selected from previous work, that have small bug repositories where we could find only 8, 6, and 2 reproducible defects respectively). No bug reports exist for Notepad. This gave us a total of $\NumBugsStudy$ bugs.
+
+%We reduced threats to the validity of this study by selecting open-source applications that were popular (average ranking 4.3 out of 5), had high numbers of active installations (average of 400,000 at the time of this study), and covered a wide range of categories (7 different categories on Google Play). Furthermore, they had active development communities: The latest source of each application was downloaded more than 900 times on average. Each application had an average of 500 issues reported on Google Code, out of which we randomly selected 10 bugs (except for Delicious, MonolithAndroid, and Nexes were we could reproduce only 8, 6, and 2 defects respectively). No bug reports existed for Notepad.
+
+We manually investigated and categorized each of the $\NumBugsStudy$ bugs, from the viewpoint of the test oracles needed to detect them. We identified 20 categories besides the core application logic. Table~\ref{tab:bugstudy} shows this categorization. %the number of bugs in each category for different apps. 
+We observed that almost 75\% of the studied bugs are not directly tied to the application logic (only 27 bugs are categorized under \emph{Application Logic}), which inspired us to explore avenues for automatically generating test oracles tailored for mobile apps.
+
+%We further grouped the categories based on oracles required to detect bugs. 
+We further aggregated the categories based on the automatability of the underlying oracles. Oracles enforcing the application logic are very application specific and notoriously difficult to generate fully automatically. Other than this category we identified $3$ groups of oracles.
+The first group, \emph{Basic Oracles}, encompass general instances of aberrant program behavior such as crashes, hangs, or illegal terminations which are not application specific, or even specific to mobile apps. 
+As an example, \emph{Uncaught Exceptions} belongs to this group. CMIS has a bug in which ``if the URL field is left empty, a null pointer exception is thrown''.
+Such basic oracles are already widely used in automated software testing and hence not particularly interesting for the current investigation.
+%includes categories whose bugs can be found with a simple \emph{Crash} oracle. The \emph{Uncaught Exceptions} category, which has the most number of bugs after \emph{Application Logic}, belongs to this group. 
+%On the other hand, the \emph{App Specific Oracles} group includes bug categories that need intensely human centric oracles, meaning that even though the bugs are not directly related to the application logic, it is very hard for an automated oracle to distinguish between intended and faulty behavior. 
+Another group, named \emph{App Specific Oracles}, are not directly related to the application logic but can still be very application specific. For example, oracles to validate the \emph{Visual Appearance} of an app belong to this group. The MonolithAndroid app has a defect in which ``holes exist in the background texture'' of the app rendering. We feel it would be very hard to generate precise automated oracles to distinguish between intended and faulty behavior in such cases. Therefore, our work does not target this category either.
+However, the group of \textit{App Agnostic Oracles} contains bugs for which the oracles are significantly more complicated than the basic oracles but sufficiently app agnostic that they could potentially be automatically generated. We found relatively well populated categories like \emph{Rotation}, \emph{Activity Life-cycle}, and \emph{Gesture} Bugs in this group.
+
+Rotation bugs manifest as the mobile device is rotated from landscape to portrait orientation or vice versa. There is a common understanding of how applications usually respond to rotation: the same content should stay on the screen, in a possibly different arrangement, and should support the same actions as before. In addition, user data entries should be preserved after rotation. VuDroid contains an example of a rotation bug where ``the tab selection resets after rotating the phone''. Our bug study found five rotation bugs in three apps. Gesture bugs form another category, similar to rotation bugs, where common gestures such as zooming in and out, and scrolling, produce a response contradicting common sense expectation. The study found four gesture bugs in four apps.
+
+The graphical user-interface of Android apps is composed of components called \textit{Activities}, each corresponding to a core function of the app. An Activity's behavior should conform to an \textit{activity life-cycle}, a finite state machine where each state represents one coarse level state (such as active or paused)\footnote{\url{http://developer.android.com/guide/components/activities.html#Lifecycle}.}. 
+Activity life-cycle bugs correspond to aberrant behavior exhibited as the app's Activity components transition through different life-cycle states.
+This happens, for example, as an app is sent to the background, killed, resumed or re-started. Similar to rotation bugs, there is a common sense understanding of how apps should behave when they are paused or killed. %(instances of changes in state of the activity life-cycle state). 
+For example, when an app is paused and subsequently resumed, it should preserve the user's data entries on the current screen. Our study found four activity life-cycle bugs in four apps. For example, Wordpress has one such bug where ``the content disappears if the app goes to the background''. Note that rotation and gesture bugs \textit{might} share root causes with activity life-cycle bugs. However, these bug categories are not causally linked. Further, they represent different bugs from the end user's perspective and hence merit being tested independently.
+
+Finally, time zone bugs occur when handling different time zones. The study found two time zone bugs in two apps. However, while app agnostic, these bugs do not directly arise from user-interactions, and hence are different from the other three categories in this group.
+
+%\footnote{Android applications should follow the activity life-cycle, a finite state machine where each state represents one coarse level state (such as active or paused) of one activity. See \url{http://developer.android.com/guide/components/activities.html#Lifecycle}.} belong to this group and are suitable for automatic testing. Examples of \emph{Rotation} and \emph{Activity Life-cycle} bugs are `, and ``Content disappears if the app goes to the background'' in WordPress, respectively. Rotation and activity life-cycle are examples of \emph{user-interaction features} as we describe in later sections.
+
+The bug study revealed that many bugs in mobile apps have shared roots beyond the application logic. It further helped us identify three categories of oracles to find such bugs: (1) the basic oracles,
+% which mainly catch exceptions and error messages
+(2) the app specific oracles,
+% which require the human tester to detail the intended behavior in each case
+and (3) the app agnostic oracles. The app agnostic oracles mostly (with the exception of time zone bugs) correspond to ways of \emph{interacting} with mobile devices, common not only between different apps but also among various mobile platforms. The study found that these \emph{user-interaction features} of mobile apps are the cause of bugs in more than half of the apps studied.  Inspired by these bugs, we introduce our test and oracle generation techniques for \emph{user-interaction features} of mobile apps.

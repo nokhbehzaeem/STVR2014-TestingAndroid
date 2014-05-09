@@ -1,0 +1,25 @@
+\Section{Feature-based Testing of Mobile Apps}
+\label{framework}
+
+%Our bug study revealed a number of bug categories that correspond to user-interaction features possible with mobile devices. These features are independent of the logic but tied to GUI states of apps. Such features are present in most mobile apps and there is a common understanding of how an app should support a feature. According to the bug study, examples of features are rotation, activity life-cycle transitions, and gestures. We can identify more features like Android Back button as possible sources of bugs not present in the bug study.
+
+% DECLARE: We describe how to test user-interaction features of mobile apps
+The findings of our bug study motivated us to develop an approach for automatically testing user-interaction features (interaction features, or simply features for short throughout the paper) of mobile apps. Our proposed approach is described in this section. We start by defining some terminology.
+
+% PRELIMINARIES
+\input{frameworkPreliminaries}
+
+% FORMAL DEFN. OF FEATURE & EXAMPLES
+\input{featureDef}
+
+% GUI MODEL AUGMENTATION USING FEATURE LIBRARY
+\input{modelAugmentation}
+
+% TEST SUITE DEFINITION (test case, covering features through test cases, test-suite cost function)
+\input{testSuiteDefinition}
+
+% TEST SUITE GENERATION
+\input{testSuiteGeneration}
+
+% TOOL
+\input{tool}

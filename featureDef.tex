@@ -1,0 +1,55 @@
+\Subsection{Authoring Oracles for Interaction Feature Testing}
+\label{sec:featureDefinition}
+
+We introduce an extensible framework in which interaction features can be defined in an application agnostic manner and stored in a library. When testing a given app our technique appropriately instantiates features from the library, using these feature definitions, and generates tests, complete with test oracles, to comprehensively test each feature.
+
+\begin{mydef}[Feature definition]
+\label{def:feature}
+The feature definition of a given interaction feature $f$ is a triple: $\langle \mathbf{u}_f, D_f(s), O_f(w_1, w_2) \rangle$. %we need the following triple: $\langle S_f, A_f, O_f(s_1, s_2, \ldots, s_k) \rangle$. $S_f \subset S$ is a subset of the app's GUI states on which the feature is applicable.
+$\mathbf{u}_f = \langle u_1, u_2, \dots, u_n \rangle$ is a sequence of actions that exercises the feature. $D_f(s)$ is the destination function, that maps a given state $s$ at which the feature can be exercised to a set of states $S_f \subseteq S$ that could potentially result from exercising $f$ at state $s$. $O_f(w_1, w_2)$ is the oracle for feature $f$, where $w_1 = \Phi(s_1, \mathbf{u}_f, -)$ is a view of some state $s_1$
+before firing actions $\mathbf{u}_f$ and $w_2=\Phi(s_2, \mathbf{u}_f, +)$ is a view of a state $s_2$ reached after firing actions $\mathbf{u}_f$ on some previous state $s_1$, possibly the same state $s_2$.
+%$O_f(s_1, s_2, \ldots, s_k)$ is the oracle for feature $f$. It is a boolean predicate over the set of states $s_1, s_2, \ldots, s_k \in S$ which evaluates to \texttt{true} if states $s_1, s_2, \ldots, s_k$ satisfy the specific relationship encoded in the predicate, and \texttt{false} otherwise.
+\end{mydef}
+\vspace*{-2ex}
+
+A crucial aspect of the above feature definition is to express $\mathbf{u}_f$, $D_f$, and $O_f$ in an application agnostic manner. We demonstrate how to do this below, through example feature definitions of several common interaction features. Another important restriction implied by Definition~\ref{def:feature} is that the set of abstract states in the GUI model should be closed under application of the interaction feature, \ie exercising the feature in one of the states should not take the application to a fundamentally new abstract state outside the GUI model. This common sense restriction is also valid for all interaction features in our knowledge. In the following examples we use $\Phi^-(s)$ and $\Phi^+(s)$ as shorthand for $\Phi(s, \mathbf{u}_f, -)$ and $\Phi(s, \mathbf{u}_f, +)$ respectively, since $\mathbf{u}_f$ is clear from the context.
+
+%In many if not most practical instances, fully automatable oracles typically involve a predicate over two states. For example, the oracle for a double screen rotation\footnote{Rotating the screen $90^\circ$ twice consecutively.} would assert that the application GUI states $s_1$ and $s_2$ that exist before and after the double rotation should be equal, i.e., $(s_1 = s_2)$.
+
+%We introduce an extensible language for defining features oracles ($O_f$'s). One can add to the set of features by identifying the relationship between the expected state and an existing state. For some user-interaction features, the expected state after exercising the feature is exactly the same as a previously seen state. Examples of such features are as follows.
+
+{\bf Double rotation (DR):} We incorporate the mobile device rotation feature in a \textit{double rotation} feature definition, which expresses the act of rotating a mobile device and then rotating it back to the original orientation. With this action the application should stay in the same state. Further, the view of that state before an after double rotation should be identical. This is expressed in the feature definition: $\mathit{DR} = \langle \mathbf{u}_f = \langle rotate, rotate\rangle, D_f(s) = \{s \}, O_f = (\Phi^-(s) = \Phi^+(s)) \rangle$.
+%O_f = (\Phi(s, \mathbf{u}_f, -) = \Phi(s, \mathbf{u}_f, +)) \rangle$.
+\\
+\indent
+{\bf Killing and restarting (KR):} The operating system might choose to kill and then restart an app for various reasons (\eg low memory). Similar to double rotation, the app should retrieve its original state and view. Thus, $ \mathit{KR} = \langle \mathbf{u}_f = \langle kill, restart\rangle, D_f(s) = \{s \}, O_f = (\Phi^-(s) = \Phi^+(s)) \rangle$.
+\\
+\indent
+{\bf Pausing and resuming (PR):} The app can be paused (\eg by hitting the Android Home button) and then resumed. $ \mathit{PR} = \langle \mathbf{u}_f = \langle pause, resume\rangle, D_f(s) = \{s \}, O_f = (\Phi^-(s) = \Phi^+(s)) \rangle$. Killing and then restarting, and pausing and then resuming are both instances of activity life-cycle transitions which all apps should support.
+\\
+\indent
+{\bf Back button functionality (Back):} The Back button is a hardware button on Android devices which takes the app to the previous screen. $ \mathit{Back} = \langle \mathbf{u}_f = \langle back \rangle, D_f(s) = \{s_p : s_p \in parent(s) \}, O_f = (\Phi^-(s_1) = \Phi^+(s_1)) \rangle$, where $s_1 \in D_f(s)$. In this case, the destination function produces a set of destinations $D(s)$ corresponding to each of the parent (using the standard graph theoretic notion of parent and child) nodes of the current state $s$ in the GUI model.
+\\
+%$\langle S_f = S, A_f = \langle a_1, back\rangle, O_f = (s_1 = s_2)\rangle$ where $a_1$ is any navigation action in the app model that takes the app from one screen to another.
+\indent
+{\bf Opening and closing menus (Menu):} The hardware Menu button on Android devices opens and closes custom menus that each app defines. For this feature definition $\mathit{Menu} = \langle \mathbf{u}_f = \langle menu, menu\rangle, D_f(s) = \{s \}, O_f = (\Phi^-(s) = \Phi^+(s)) \rangle$.
+
+%{\bf Up functionality:} The Up button was introduced in Android 3.0. It appears on the top left corner of the screen and consists of the app icon and a left-point caret. The Up functionality is similar to Back, except that Back always takes the app to the previous screen while Up takes it to the parent screen, which might or might not be the same. As opposed to Back, the model has to define the target of the Up functionality, since it is not uniquely defined and depends on how the hierarchy of screens is viewed. If $s_1$ and $s_2$ are the states before and after hitting the Up icon and $s_3$ is the expected target of Up after $s_1$ according to the model then we have $\langle S_f = S - \{top\}, A_f = \langle up\rangle, O_f = (s_3 = s_2)\rangle$. $top$ is the topmost level screen for which Up is undefined.
+
+%{\bf Double scrolling:} Scrolling down and then back up should bring back the original screen. $\langle S_f = S, A_f = \langle scrollDown, scrollUp\rangle, O_f = (s_1 = s_2)\rangle$.
+
+In the above instances the oracle was always an assertion of equality between two appropriate state views. In general, however, the oracle predicate can include arbitrary relational or logical operators. %For some other user-interaction features, the expected state is a subset or a superset of a previously seen state.
+For example:
+
+{\bf Zooming in (ZI):} Zooming into a screen should bring up a subset of what was originally on the screen. $\mathit{ZI} = \langle \mathbf{u}_f = \langle zoomIn\rangle, D_f(s) = \{s \}, O_f = (\Phi^-(s) \supset \Phi^+(s)) \rangle$.
+\\
+\indent
+{\bf Zooming out (ZO):} Zooming out from a screen should result in a superset of the original screen. $\mathit{ZO} = \langle \mathbf{u}_f = \langle zoomOut\rangle, D_f(s) = \{s \}, O_f = (\Phi^-(s) \subset \Phi^+(s)) \rangle$.
+\\
+%The user can extend the set of user-interaction features by defining new oracles. For instance:
+\indent
+{\bf Scrolling (SCR):} Scrolling down (or up) should display a screen that shares parts of the previous screen. $\mathit{SCR} = \langle \mathbf{u}_f = \langle scrollDown\rangle, D_f(s) = \{s \}, O_f = (\Phi^-(s) \cap \Phi^+(s) \neq \emptyset) \rangle$.
+%$\langle S_f = S, A_f = \langle scrollDown\rangle, O_f = (s_1 \cap s_2 = \emptyset (or \neq \emptyset)))\rangle$.
+%Previous work \remark{ref?} showed bugs that would make the app run out of memory in case of many scrolls.
+
+Note that the feature definition itself includes an implementation of the oracle, albeit an app independent one, that can be re-used across different apps. Thus, the semantics of operators used in the oracles are defined there.

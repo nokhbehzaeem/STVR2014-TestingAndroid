@@ -1,0 +1,99 @@
+\Section{Introduction}
+\label{introduction}
+
+% The rise and importance of mobile applications & the case for automated testing of mobile software
+Recent years have witnessed an explosive growth in the use of mobile devices and in the number and variety of software applications developed for such devices. Mobile applications, or apps as they are popularly called, are often developed in small, fast-paced projects with scarce testing resources. At the same time, testing mobile apps presents some unique challenges, such as supporting a wide range of devices, platforms and versions, as well as ensuring the integrity of the rich and highly interactive user-interface characteristic of such apps~\cite{MobileDev:IBMWhitePaper}. Thus, there is a growing need to develop automated testing tools to support the development of mobile apps.
+
+% Typically automated testing = test sequence generation
+Researchers have made significant progress in developing techniques to support automated testing of mobile apps~\cite{Nguyen:2012:ISSTA, AnandFSE2012, AmalfitanoASE2012, Joorabchi:2012:WCRE, collider2013}. However, these techniques primarily target the generation of test sequences, leaving the task of adding test oracles~\cite{Oracle:Howden78, Weyuker80} into these test sequences to the human tester. This itself can be a manually intensive process and if the oracles are not of a sufficiently high quality, can potentially compromise the efficacy of test cases.
+
+% Our aim & the bug-study
+The aim of this paper is to partially address the oracle problem in the context of automated test case generation for mobile applications. To realize this aim we conducted a study where we sampled, studied and categorized the bugs reported for several popular, open-source Android applications. The study revealed that a significant fraction of bugs can be attributed to \emph{user-interaction} features that are supported by the mobile platform and simply implemented by each application. Such features include content presentation or navigation features such as rotating the device or using various gestures to scroll or zoom into screens. A distinguishing characteristic of these features is that they are largely independent of the core logic of the application. More importantly, there is often a general, common sense expectation of how the application should respond to a given feature. For example, rotating a device and then rotating it back should bring the display precisely back to the initial screen. Such observations motivate our approach.
+
+% Summary of our approach
+We present a novel framework for authoring test oracles for checking
+user-interaction features of mobile applications, in an application
+agnostic manner.  Our framework supports
+\emph{model-driven test suite generation}~\cite{SwTestBk:2007} where each
+generated test includes both the test sequence to execute and the
+corresponding assertions to check (as test oracles).  Given 
+a model of the user-interface of the mobile app under test, our
+framework uses its built-in, extensible library of oracles (for
+various user-interaction features) and generates a test suite to
+comprehensively test the app against user-interaction
+features.
+
+While the basic goal of our framework is to allow generation of test
+suites that are complete with embedded test oracles for supported
+features, it includes two more techniques to further enhance its
+usefulness in practice.  %Specifically, 
+Firstly, our framework supports a customizable \emph{cost} 
+function that defines a measure of cost for executing %a transition in the input model 
+a given test suite and produces an output suite that has likely minimal 
+execution cost, while checking each feature.
+Secondly, our test generation technique inserts multiple test oracles, for 
+\emph{different} features, within a \emph{single} test case, when possible.
+This allows checking of multiple properties within the same test execution,
+by conceptually sharing execution segments common across different tests,
+thus reducing the overall test execution cost.
+% and reducing the total overhead of executing test suites for mobile apps, which
+%typically require high execution overhead due to their event-driven functionality.  
+Our test generation technique produces
+\emph{feature-adequate} test suites, which for the given
+model exercise every transition relevant to each supported feature and
+test its expected functionality.
+
+% A few sentences about our tool and results
+Our tool, \tool, embodies our framework and provides a fully
+automated, \emph{push-button} tool-set for test case generation for
+mobile apps.  Our initial experiments with \tool{} show that it generates
+valuable test suites and provides the foundation of a promising
+approach for more effective testing of mobile apps.
+
+% Main Contributions
+This paper makes the following contributions:
+
+%\begin{itemize}\denseitems
+
+%\item
+{\bf Bug study}.  We perform a comprehensive study of
+          real mobile application defects and identify a family of
+          mobile application features, which we term \textit{user-interaction features}. We observe that these features are 
+          implicated in a significant fraction of the studied defects. 
+          Further, they are characteristic of the mobile platform and implemented 
+          by many mobile applications but not directly dependent on the
+          application logic.          
+\\
+%\item
+\indent{\bf Feature-driven testing of mobile apps}.   We introduce a novel form of
+          \emph{test adequacy}~\cite{GoodenoughGerhart1975} in the context of mobile apps where the
+          goal is to cover the given model of the app's user-interface
+          by exercising each transition relevant to any desired
+          feature and checking the expected functionality for the feature.
+\\
+%\item 
+\indent{\bf Automatic oracle generation for testing mobile apps}. We present an extensible 
+				  library of oracles for various user-interaction features.
+				  % along with how to use those features to automatically generate test oracles. 
+				  Our framework allows authoring test oracles for features, in an
+	        application agnostic manner, for re-use across a number of
+	        different apps that are expected to support those features.   
+	        These oracles are appropriately instantiated by our model-driven
+	        test suite generation technique. 
+\\
+%\item 
+\indent{\bf Minimal cost test suite generation}. We provide a technique for generating a
+          compact test suite by trying to minimize a customizable cost function. 
+          The test suite also incorporates the oracles to comprehensively test the supported feature set.
+\\
+%\item 
+\indent{\bf Evaluation}.  We present our tool, \tool{}, for
+          automated testing of mobile apps and its evaluation on
+          $\NumApps$ real Android applications.  The evaluation
+          confirms that \tool{} is able to generate compact
+          test suites, complete with test oracles, for testing the
+          identified features. These test suites are able to reveal
+          a number of bugs in the studied
+          applications: \tool{} found a total of $\NumBugs$ bugs, 
+          a few of them particularly serious, using a total of $\NumTests$ tests for these $\NumApps$ apps.
+%\end{itemize}

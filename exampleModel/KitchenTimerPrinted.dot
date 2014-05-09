@@ -1,0 +1,29 @@
+digraph G {
+
+  graph [overlap = false];
+
+  mainTimers [ label="mainTimers", margin = 0 ];
+  info [ label="info", margin = 0 ];
+  preferences [ label="preferences", margin = 0 ];
+  donation [ label="donation" , margin = 0];
+  timer1 [ label="timerRunning" , margin = 0];
+
+  mainTimers -> info [ label="infoMenu" ];
+  info -> mainTimers [ label="textBack" ];
+  mainTimers -> preferences [ label="prefMenu" ];
+  mainTimers -> donation [ label="donateMenu" ];
+  donation -> mainTimers [ label="textNo" ];
+  mainTimers -> timer1 [ label="startStop" ];
+  timer1 -> mainTimers [ label="startStop" ];
+  info -> mainTimers [ label="Back" color = orange ];
+  preferences -> mainTimers [ label="Back" color = orange ];
+  donation -> mainTimers [ label="Back" color = orange ];
+  mainTimers :ne -> mainTimers:nw [ label="DR" color = orange ];
+  info -> info [ label="DR" color = orange ];
+  preferences -> preferences [ label="DR" color = orange ];
+  donation -> donation [ label="DR" color = orange ];
+  timer1 -> timer1 [ label="DR" color = orange ];
+
+  mainTimers :ne -> mainTimers :nw [ label="hoursUp/hoursDown/minutesUp/minutesDown/secondsUp/secondsDown" ];
+
+}
