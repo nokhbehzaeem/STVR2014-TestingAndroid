@@ -1,4 +1,4 @@
-\Subsection{Augmenting GUI Models with Feature Instantiations}
+\subsection{Augmenting GUI Models with Feature Instantiations}
 \label{sec:modelAugmentation}
 
 Given a GUI model $G = \langle V, E, r, A, \mathcal{L} \rangle$ of the target app and a library $\mathcal{F}$ of interaction features, specified as discussed in Section~\ref{sec:featureDefinition}, the next step in our approach is to annotate $G$ with all possible instantiations of each feature in $\mathcal{F}$ to produce an augmented GUI model $G^+ = \langle V, E^+, r, A^+, \mathcal{L}^+ \rangle$. Specifically, this involves adding a set of special labeled edges, called \textit{golden edges}, to $G$. Each golden edge, $e_f(v_1, v_2)$ denotes that feature $f$ when exercised at the state of vertex $v_1$ takes the application to the state of vertex $v_2$. Further, $e_f$ is labeled with $\mathbf{u}_f$, the action sequence of feature $f$. Thus, the augmented model $G^+$ includes the augmented set of edges $E^+ = E \cup E_{golden}$,  augmented action set $A^+ = A \cup \bigcup_{f \in \mathcal{F}} \mathbf{u}_f$, and appropriately modified labeling function $\mathcal{L}^+: A^+ \rightarrow E^+$, where $E_{golden}$ are the golden edges and $\bigcup_{f \in \mathcal{F}} \mathbf{u}_f$ are the actions for features $\mathcal{F}$ labeling the golden edges.
@@ -42,6 +42,6 @@ Figure~\ref{fig:dotGraph} shows the GUI model of our simplified version of Kitch
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.65\textwidth]{figures/dotGraph.jpg}
-\Caption{Simplified Model of Kitchen Timer.}
+\caption{Simplified Model of Kitchen Timer.}
 \label{fig:dotGraph}
 \end{figure*}

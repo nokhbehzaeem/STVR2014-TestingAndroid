@@ -1,4 +1,4 @@
-\Subsection{Feature-based Test Sequence Generation}
+\subsection{Feature-based Test Sequence Generation}
 \label{sec:traversalAlgo}
 
 Recall that interaction features are orthogonal to the core logic of the app and their function is typically to help the user navigate or access content on the app by mutating the state of the app's GUI. Further, exercising an interaction feature on a given state has no side effects in terms of the GUI model, \ie the effect of exercising that feature is limited to a single GUI screen and has no impact on the downstream actions. This observation is very important as it allows us to arbitrarily mix and match instances of several features (and their test oracles) in a single test case, as long as it lowers the cost of the test suite, per Definition~\ref{def:costfunction}. Since each instance of every feature is already recorded in our augmented GUI model $G^+$ (servicing the test adequacy criterion of Definition~\ref{def:coverage}), our test generation problem can be stated as follows.
@@ -25,7 +25,7 @@ Then, using $c$ as a pointer to the \emph{current} node, which is initially set 
 
 \begin{table}
 \vspace*{-2ex}
-\Caption{Test Sequences for Figure~\ref{fig:dotGraph}.}
+\caption{Test Sequences for Figure~\ref{fig:dotGraph}.}
 \label{tab:tests}
 \begin{center}
 \begin{tabular}{@{}l@{}l@{}}
