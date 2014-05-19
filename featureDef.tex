@@ -10,7 +10,6 @@ $\mathbf{u}_f = \langle u_1, u_2, \dots, u_n \rangle$ is a sequence of actions t
 before firing actions $\mathbf{u}_f$ and $w_2=\Phi(s_2, \mathbf{u}_f, +)$ is a view of a state $s_2$ reached after firing actions $\mathbf{u}_f$ on some previous state $s_1$, possibly the same state $s_2$.
 %$O_f(s_1, s_2, \ldots, s_k)$ is the oracle for feature $f$. It is a boolean predicate over the set of states $s_1, s_2, \ldots, s_k \in S$ which evaluates to \texttt{true} if states $s_1, s_2, \ldots, s_k$ satisfy the specific relationship encoded in the predicate, and \texttt{false} otherwise.
 \end{mydef}
-\vspace*{-2ex}
 
 A crucial aspect of the above feature definition is to express $\mathbf{u}_f$, $D_f$, and $O_f$ in an application agnostic manner. We demonstrate how to do this below, through example feature definitions of several common interaction features. Another important restriction implied by Definition~\ref{def:feature} is that the set of abstract states in the GUI model should be closed under application of the interaction feature, \ie exercising the feature in one of the states should not take the application to a fundamentally new abstract state outside the GUI model. This common sense restriction is also valid for all interaction features in our knowledge. In the following examples we use $\Phi^-(s)$ and $\Phi^+(s)$ as shorthand for $\Phi(s, \mathbf{u}_f, -)$ and $\Phi(s, \mathbf{u}_f, +)$ respectively, since $\mathbf{u}_f$ is clear from the context.
 

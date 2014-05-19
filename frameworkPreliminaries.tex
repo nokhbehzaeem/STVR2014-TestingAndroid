@@ -5,7 +5,6 @@
 \label{def:interactionFeature}
 An interaction feature is an action supported by the mobile platform, which enables a human user to interact with a mobile app, using the mobile device and the graphical user-interface (GUI) of the app. Further, an interaction feature is associated with a common sense expectation of how the mobile app should respond to that action. 
 \end{mydef}
-\vspace*{-2ex}
 
 % Natural language explanation of user-interaction features
 Interaction features include actions like rotating a mobile device, general purpose gestures like zooming in/out or scrolling, and actions which start, pause, kill or resume operation of an app, taking its Activity GUI components through various states in their life-cycle. These features were discussed in our bug study. In addition, features like the \textit{Back} or \textit{Up} buttons of the Android platform\footnote{See \url{http://developer.android.com/design/patterns/navigation.html}.} are also valid interaction features. Note that the above definition \textit{excludes} a number of common gestures such as {\small\texttt{click}} or {\small\texttt{longClick}}, or other custom gestures, for which there is no standard expected response from apps; it is completely context and application specific. Since a given interaction feature will have, in general, a standard expected behavior, across apps and different mobile platforms\footnote{Specific apps may of course choose to modify this standard response.}, this provides a general, app agnostic \textit{oracle} for validating an app's response to exercising that feature. Thus, a key component of our approach is authoring such reusable oracles and employing them in interaction feature testing.
@@ -17,7 +16,6 @@ We follow a model-driven approach to generating test-cases for testing interacti
 \label{def:GUImodel}
 A GUI model of an app is a finite state machine $\mathcal{M}$, denoted by the $4$-tuple $\mathcal{M} = (S, s_0, A, R)$, where $S$ is a finite set of abstract states representing different GUI screens, $s_0 \in S$ is the initial state denoting the app's opening screen, $A$ is a finite set of application specific actions the user may perform in executing the logic of the app, and $R \subseteq S \times A \times S$ is a transition relation describing transitions between states in $S$ in response to user actions from $A$.  
 \end{mydef} 
-\vspace*{-2ex}
 
 %%%%% INCORPORATE THESE POINTS BELOW
 %We identify the following properties for user-interaction features (features for short throughout the paper).

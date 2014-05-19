@@ -24,7 +24,6 @@ We propose a greedy algorithm for this NP-hard problem. In addition, we introduc
 Then, using $c$ as a pointer to the \emph{current} node, which is initially set to $s$, on Line~\ref{line:cHasOutgoing} we pick an uncovered edge going out of $c$. We take this edge, mark it as covered (Line~\ref{line:coverIt}), push it onto $stack$ (Line~\ref{line:pushIt}), and update $c$ to the destination of this edge accordingly (Line~\ref{line:updateC}). Once we get to a node that has no uncovered outgoing edge, the current test sequence is complete and we set $stop$ to {\small\texttt{True}} on Line~\ref{line:stopToTrue}. The current $stack$ makes one test sequence and we continue by generating more sequences and adding them to $T$ which is the test suite and is the output of this algorithm. For instance, the first test sequence that is generated is shown as $T_0$ under \emph{No Optimization} in Table~\ref{tab:tests}. This Table displays the test suite our greedy algorithm generates for the simplified model of Kitchen Timer. The test suite has $7$ tests at a total cost of $34$, with $\alpha$ and $\beta$ both set to $1$ in the cost function.
 
 \begin{table}
-\vspace*{-2ex}
 \caption{Test Sequences for Figure~\ref{fig:dotGraph}.}
 \label{tab:tests}
 \begin{center}
@@ -68,7 +67,6 @@ $T_3$ = $\langle$donateMenu, DR$\rangle$\\
 \bottomrule
 \end{tabular}
 \end{center}
-\vspace*{-0.1in}
 \end{table}
 
 We introduce two optimizations to augment our basic traversal algorithm. The first optimization called \textit{prioritization}, prioritizes golden edges whenever there are both golden and regular (non-golden) uncovered edges going out of a node, since the goal of the traversal algorithm is to cover golden edges. To implement this optimization, the method $outGoing()$ in Algorithm~\ref{alg:traversalAlgo} returns golden edges first. Table~\ref{tab:tests} displays the output of the traversal algorithm with this optimization incorporated. For example, at the beginning of \emph{$T_0$} under \emph{Prioritization Optimization On}, when the golden edge \emph{DR} is available, it is taken before any other edge. This optimization makes the test suite smaller and decreases the cost from $34$ to $28$.

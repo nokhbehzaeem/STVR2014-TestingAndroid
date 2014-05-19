@@ -1,0 +1,114 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem{MobileDev:IBMWhitePaper}
+Williamson L. A mobile application development primer: A guide for enterprise
+  teams working on mobile application projects. IBM Software Thought Leadership
+  White Paper 2013.
+
+\bibitem{Nguyen:2012:ISSTA}
+Nguyen CD, Marchetto A, Tonella P. Combining model-based and combinatorial
+  testing for effective test case generation. \emph{ISSTA}, 2012.
+
+\bibitem{AnandFSE2012}
+Anand S, Naik M, Harrold MJ, Yang H. Automated concolic testing of smartphone
+  apps. \emph{FSE}, 2012.
+
+\bibitem{AmalfitanoASE2012}
+Amalfitano D, Fasolino AR, Tramontana P, Carmine SD, Memon AM. Using {GUI}
+  ripping for automated testing of {A}ndroid applications. \emph{ASE}, 2012.
+
+\bibitem{Joorabchi:2012:WCRE}
+Joorabchi ME, Mesbah A. Reverse engineering {iOS} mobile applications.
+  \emph{WCRE}, 2012.
+
+\bibitem{collider2013}
+Jensen CS, Prasad MR, M\o{}ller A. Automated testing with targeted event
+  sequence generation. \emph{ISSTA}, 2013.
+
+\bibitem{Oracle:Howden78}
+Howden WE, Miller E. \emph{Introduction to the Theory of Testing}. 1978.
+
+\bibitem{Weyuker80}
+Weyuker E. The oracle assumption of program testing. \emph{ICSS}, 1980.
+
+\bibitem{SwTestBk:2007}
+Pezz{\`e} M, Young M. \emph{Software testing and analysis - process, principles
+  and techniques}. 2007.
+
+\bibitem{GoodenoughGerhart1975}
+Goodenough J, Gerhart S. Toward a theory of test data selection. \emph{TSE}
+  1975; (2):156--173.
+
+\bibitem{Hu:2011:AST}
+Hu C, Neamtiu I. Automating {GUI} testing for {A}ndroid applications.
+  \emph{AST}, 2011.
+
+\bibitem{Dynodroid:2013}
+Machiry A, Tahiliani R, Naik M. Dynodroid: An input generation system for
+  android apps. \emph{FSE}, 2013.
+
+\bibitem{YangFASE2013}
+Yang W, Prasad MR, Xie T. A grey-box approach for automated {GUI}-model
+  generation of mobile applications. \emph{FASE}, 2013.
+
+\bibitem{memon2001coverage}
+Memon AM, Soffa ML, Pollack ME. Coverage criteria for {GUI} testing.
+  \emph{FSE}, 2001.
+
+\bibitem{PathCover:NtafosH79}
+Ntafos SC, Hakimi SL. On path cover problems in digraphs and applications to
+  program testing. \emph{TSE}  1979; \textbf{5}(5):520--529.
+
+\bibitem{robillard13tse}
+Robillard MP, Bodden E, Kawrykow D, Mezini M, Ratchford T. Automated {API}
+  property inference techniques. \emph{TSE}  2013; \textbf{39}(5):613--637.
+
+\bibitem{Nguyen:2013}
+Nguyen CD, Marchetto A, Tonella P. Automated oracles: an empirical study on
+  cost and effectiveness. \emph{FSE}, 2013.
+
+\bibitem{toddler:ICSE2013}
+Nistor A, Song L, Marinov D, Lu S. Toddler: detecting performance problems via
+  similar memory-access patterns. \emph{ICSE}, 2013.
+
+\bibitem{McKeeman1998}
+McKeeman W. Differential testing for software. \emph{Digital Technical Journal}
+   1998; \textbf{10}(1):100--107.
+
+\bibitem{ZaeemKhurshid2012}
+Zaeem RN, Khurshid S. Test input generation using dynamic programming.
+  \emph{FSE}, 2012.
+
+\bibitem{xpert:ICSE2013}
+Choudhary SR, Prasad M, Orso A. {X-PERT}: Accurate identification of
+  cross-browser issues in web applications. \emph{ICSE}, 2013.
+
+\bibitem{MirzaeiJPF2012}
+Mirzaei N, Malek S, Pasareanu CS, Esfahani N, Mahmood R. Testing {A}ndroid apps
+  through symbolic execution. \emph{Software Engineering Notes}  2012;
+  \textbf{37}(6):1--5.
+
+\bibitem{MemonWCRE2003}
+Memon AM, Banerjee I, Nagarajan A. {GUI} ripping: Reverse engineering of
+  graphical user interfaces for testing. \emph{WCRE}, 2003.
+
+\bibitem{Mesbah:2012:TWEB}
+Mesbah A, van Deursen A, Lenselink S. Crawling ajax-based web applications
+  through dynamic analysis of user interface state changes. \emph{TWEB}  2012;
+  \textbf{6}(1):3:1--3:30.
+
+\bibitem{Arlt:2012:ISSRE}
+Arlt S, Podelski A, Bertolini C, Sch\"a{}f M, Banerjee I, Memon AM. Lightweight
+  static analysis for {GUI} testing. \emph{ISSRE}, 2012.
+
+\bibitem{Ganov:2009:ICFEM}
+Ganov SR, Killmar C, Khurshid S, Perry DE. Event listener analysis and symbolic
+  execution for testing {GUI} applications. \emph{ICFEM}, 2009.
+
+\end{thebibliography}

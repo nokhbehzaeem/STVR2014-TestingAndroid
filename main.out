@@ -1,0 +1,18 @@
+\BOOKMARK [1][]{section.1}{1 Introduction}{}% 1
+\BOOKMARK [1][]{section.2}{2 Bug Study}{}% 2
+\BOOKMARK [2][]{subsection.2.1}{2.1 Application Logic Oracles}{section.2}% 3
+\BOOKMARK [2][]{subsection.2.2}{2.2 Basic Oracles}{section.2}% 4
+\BOOKMARK [2][]{subsection.2.3}{2.3 App Specific Oracles}{section.2}% 5
+\BOOKMARK [2][]{subsection.2.4}{2.4 App Agnostic Oracles}{section.2}% 6
+\BOOKMARK [1][]{section.3}{3 Example}{}% 7
+\BOOKMARK [1][]{section.4}{4 Feature-based Testing of Mobile Apps}{}% 8
+\BOOKMARK [2][]{subsection.4.1}{4.1 Authoring Oracles for Interaction Feature Testing}{section.4}% 9
+\BOOKMARK [2][]{subsection.4.2}{4.2 Augmenting GUI Models with Feature Instantiations}{section.4}% 10
+\BOOKMARK [2][]{subsection.4.3}{4.3 Test Suite Definition}{section.4}% 11
+\BOOKMARK [2][]{subsection.4.4}{4.4 Feature-based Test Sequence Generation}{section.4}% 12
+\BOOKMARK [2][]{subsection.4.5}{4.5 Implementation}{section.4}% 13
+\BOOKMARK [1][]{section.5}{5 Evaluation}{}% 14
+\BOOKMARK [2][]{subsection.5.1}{5.1 RQ 1 and 2: Finding Real Bugs}{section.5}% 15
+\BOOKMARK [2][]{subsection.5.2}{5.2 RQ 3: Compactness of Generated Test Suites}{section.5}% 16
+\BOOKMARK [1][]{section.6}{6 Related Work}{}% 17
+\BOOKMARK [1][]{section.7}{7 Conclusion}{}% 18
