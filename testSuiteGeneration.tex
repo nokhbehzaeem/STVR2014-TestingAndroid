@@ -5,18 +5,34 @@ Recall that interaction features are orthogonal to the core logic of the app and
 
 \noindent\textbf{Test suite generation problem:} \textit{Given an augmented GUI model $G^+$ generate a minimum cost test suite such that each golden edge in $G^+$ is covered by at least one test in the suite.}
 
-%\begin{proof}
-%The proof sketch is by reducing the \textit{minimum path cover problem}~\cite{PathCover:NtafosH79} to this problem as follows. Given an instance of the minimum path cover problem, take the given directed graph $G$ and construct a modified $G'$ from it:
-%\begin{enumerate}
-%\item Add a self loop to every vertex and mark it as golden (ensuring that we cover all golden edges if and only if we cover all vertices).
-%\item Add a new root node $r$ and add an edge from $r$ to each vertex of $G$ (accounting for the fact that in the original path cover problem paths need not originate at a starting node, which they do in our case).
-%\end{enumerate}
+It can be shown that the above problem is NP-complete, by reducing the \textit{minimum path cover problem}~\cite{PathCover:NtafosH79} to this problem. In order to formally state and prove this claim, we first express our feature-driven test suite generation problem and the minimum path cover problem as decision problems.
+
+\begin{mydef}[Minimum Cost Feature-Covering Test Suite (MFCTS)]
+Given an augmented GUI model $G^+(V, E^+, r, A^+, \mathcal{L}^+)$, a cost function $C(T) = cost(T) = \alpha * |T| + \beta * \Sigma_{t \in T} |t|$, where $\alpha, \beta \geq 0$ are positive co-efficients, and a non-negative real number bound $B$, does there exist a test suite $T$ that covers every feature defined in $G^+$, such that $C(T) \leq B$?
+\end{mydef}
+
+\begin{mydef}[Minimum Path Cover (MPC)]
+Given a directed graph $G(V,E)$ and a positive integer $K$, does there exist a set of directed paths $P$, such every vertex $v \in V$ belongs to at least one path in $P$ and $|P| \leq K$?
+\end{mydef}
+
+\begin{theorem}
+The minimum cost feature-covering test suite (MFCTS) problem is NP-Complete.
+\end{theorem}
+
+\begin{proof}
+It is easy to see that MFCTS is in NP. Given a witness test-suite $T_W$, the cost of $T_W$ can be computed in time linear in the size of $T_W$ and checked against bound $B$ to verify that $C(T_W) \leq B$. To show that MFCTS is NP-hard, we reduce minimum path cover to it. Given an instance of minimum path cover comprising a directed graph $G_{pc}(V_{pc},E_{pc})$ and an integer bound $K$, we construct an instance of MFCTS from it as follows. For the cost function $C(T)$ of the MFCTS instance set $\alpha = 1$ and $\beta = 0$ and set the bound $B = K$. Now construct an augmented GUI model instance $G^+(V, E^+, r, A^+, \mathcal{L}^+)$ from $G_{pc}(V_{pc}, E_{pc})$ as follows.
+\begin{enumerate}
+\item Add a new vertex $r$ which forms the root vertex of $G^+$. The vertex set $V$ of $G^+$ is given by $V = r \cup V_{pc}$.
+\item Add a set of golden edges $E_{golden}$ to $G^+$ by adding a self loop to every vertex in $V_{pc}$ and marking it as golden.
+\item Add a set of edges $E_{root}$ from root vertex $r$ to each vertex $v \in V_{pc}$. Thus, the edges $E^+$ of $G^+$ are given by $E^+ = E \cup E_{golden} \cup E_{root}$.
+\item Define a dummy action $a$, such that $A^+ = \{ a \}$.
+\item Define the labeling function $\mathcal{L}^+$ as labeling every edge in $E^+$ by the dummy action $a$.
+\end{enumerate}
+We claim that the constructed MFCTS instance has a \textit{yes} answer if and only if the original minimum path cover instance has a \textit{yes} answer. It is easy to see that if the MFTCS instance has a \textit{yes} answer then a valid a test suite $T$ of the MFCTS instance can be used to construct a path cover $P$ for the original MPC instance by simply taking each test sequence $t$ from $T$ and removing from it any edges (and corresponding actions) from sets $E_{golden}$ and $E_{root}$ that are instantiated in it. The remaining sub-sequence will indeed be a path $p$ in $G_{pc}$ that will cover at least those vertices of $V_{pc}$ whose golden edges appeared in $t$ and were removed to extract path $p$. Since there is one golden edge per vertex of $V_{pc}$ every vertex of $V_{pc}$ will be covererd by some path thus extracted from test suite $T$. Conversely, if the MFCTS instance has a \textit{no} answer, so will the original MPC instance because if it had a \textit{yes} answer a valid test suite $T$ for the MFCTS instance could be constructed from a path cover $P$ of the MPC using the reverse of the above reduction. Thus, MFCTS is NP-hard and hence NP-complete.
 %Now we solve our problem on $G'$ with $\alpha = 1$ and $\beta = 0$, thus minimizing the number of $r$-originating paths covering all golden edges, or essentially all vertices, irrespective of path lengths. The answer would be a minimum path cover over $G$.
-%\end{proof}
+\end{proof}
 
-It can be shown that the above problem is NP-hard, by reducing the \textit{minimum path cover problem}~\cite{PathCover:NtafosH79} to this problem. We omit the detailed proof here for lack of space.
-
-We propose a greedy algorithm for this NP-hard problem. In addition, we introduce two optimizations to further reduce the cost associated with covering features. Algorithm~\ref{alg:traversalAlgo} shows a pseudo-code of the traversal algorithm we propose. The input to this algorithm is the augmented graph model. We use a set to keep track of \emph{covered edges} $CE$ and a stack to record the test sequence. First, on Line~\ref{line:BFS}, we sort the nodes based on their increasing distance from the root using a Breadth First Search (BFS) and keep the sorted list in $L$. For example, we can sort the nodes of Figure~\ref{fig:dotGraph} as $\langle$\emph{mainTimers}, \emph{info}, \emph{preferences}, \emph{donation}, \emph{timerRunning}$\rangle$. Then, working through the list $L$ on Line~\ref{line:loopForL}, we select the next node $s$ that has uncovered outgoing edges (Line~\ref{line:sHasOutgoing}). In our example, the first node in the list with uncovered outgoing edges is \emph{mainTimers} (as we have not yet covered any edges). We use the shortest path from the root to this node (saved through previously performed BFS) as the prefix of all sequences to be generated starting from it. Lines~\ref{line:prefixBeg} to \ref{line:prefixEnd} iterate through the shortest path and (1) mark edges as visited by adding them to $CE$, and (2) push them onto $stack$. The rationale behind using such a prefix is to minimize the cost associated with taking edges to get to a given node, where the exploration for uncovered golden edges begins. % In the case of \emph{mainTimers}, the prefix would be empty as \emph{mainTimers} is the root of the graph.
+We propose a greedy algorithm for this NP-complete problem. In addition, we introduce two optimizations to further reduce the cost associated with covering features. Algorithm~\ref{alg:traversalAlgo} shows a pseudo-code of the traversal algorithm we propose. The input to this algorithm is the augmented graph model. We use a set to keep track of \emph{covered edges} $CE$ and a stack to record the test sequence. First, on Line~\ref{line:BFS}, we sort the nodes based on their increasing distance from the root using a Breadth First Search (BFS) and keep the sorted list in $L$. For example, we can sort the nodes of Figure~\ref{fig:dotGraph} as $\langle$\emph{mainTimers}, \emph{info}, \emph{preferences}, \emph{donation}, \emph{timerRunning}$\rangle$. Then, working through the list $L$ on Line~\ref{line:loopForL}, we select the next node $s$ that has uncovered outgoing edges (Line~\ref{line:sHasOutgoing}). In our example, the first node in the list with uncovered outgoing edges is \emph{mainTimers} (as we have not yet covered any edges). We use the shortest path from the root to this node (saved through previously performed BFS) as the prefix of all sequences to be generated starting from it. Lines~\ref{line:prefixBeg} to \ref{line:prefixEnd} iterate through the shortest path and (1) mark edges as visited by adding them to $CE$, and (2) push them onto $stack$. The rationale behind using such a prefix is to minimize the cost associated with taking edges to get to a given node, where the exploration for uncovered golden edges begins. % In the case of \emph{mainTimers}, the prefix would be empty as \emph{mainTimers} is the root of the graph.
 
 %\lstinputlisting[caption=Traversal Algorithm in Java.,label=lst:traversalAlgo]{listings/traversalAlgo.java}
 \input{traversalAlgoPseudoCode}
