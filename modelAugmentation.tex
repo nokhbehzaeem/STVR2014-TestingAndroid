@@ -37,11 +37,34 @@ Given a GUI model $G = \langle V, E, r, A, \mathcal{L} \rangle$ of the target ap
 \end{algorithm}
 
 Algorithm~\ref{alg:augmentGUImodel} shows the procedure to perform GUI model augmentation. The algorithm iterates over each state $v$ in the GUI model (lines $3-13$) and each feature $f$ in library $\mathcal{F}$, instantiating $f$ at $v$, as per the feature definition. It computes the set of possible destination vertices $dSet$, by evaluating function $D_f$ in the feature definition (function $\mathit{destinationSet()}$ on line $5$). It then iterates over each possible destination vertex $v_1$ (lines $6-11$) creating and adding a golden edge, labeled by the feature's action sequence $\mathbf{u}_f$ (line $8$), to the augmented model $G^+$.
-Figure~\ref{fig:dotGraph} shows the GUI model of our simplified version of Kitchen Timer from Section~\ref{example}, augmented with golden edges for the Double Rotation and Back button features.
+Figure~\ref{fig:dotGraphUnaug} shows the GUI model of our simplified version of Kitchen Timer from Section~\ref{example}, and Figure~\ref{fig:dotGraph} shows the model augmented with golden edges for the Double Rotation and Back button features.
 
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.65\textwidth]{figures/dotGraph.jpg}
+\subfloat{\includegraphics[width=0.18\columnwidth]{figures/before.jpg}
+}
+\vfill
+\includegraphics[width=0.8\textwidth]{figures/dotGraphUnaug.jpg}
+\vfill
+\subfloat{\includegraphics[width=0.18\columnwidth]{figures/info.jpg}
+}
+\hfill
+\subfloat{\includegraphics[width=0.18\columnwidth]{figures/prefs.jpg}
+}
+\hfill
+\subfloat{\includegraphics[width=0.18\columnwidth]{figures/donation.jpg}
+}
+\hfill
+\subfloat{\includegraphics[width=0.18\columnwidth]{figures/timerRunning.jpg}
+}
 \caption{Simplified Model of Kitchen Timer.}
+\label{fig:dotGraphUnaug}
+\end{figure*}
+
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/dotGraph.jpg}
+\caption{Augmented Model of Kitchen Timer.}
 \label{fig:dotGraph}
 \end{figure*}
