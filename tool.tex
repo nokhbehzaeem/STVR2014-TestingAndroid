@@ -15,18 +15,18 @@ model of the application's GUI as an XML file. \tool{} automatically
 adds golden edges for the currently supported set of features.
 %(rotation, killing and restarting, pausing and resuming, and Back button)
 Then, \tool{} generates a graphical representation of the GUI
-model using the dot program\footnote{http://www.graphviz.org} so that
+model using the dot program\footnote{\url{http://www.graphviz.org}} so that
 the user can visually validate the model. Figure~\ref{fig:dotGraph} is
 a sample graphical representation that \tool{} generated.
 \\
 \indent
 {\bf Step 2:}
-Once the model is validated, \tool{} traverses the model using traversal algorithms to generate test suites. \tool{} provides the following options for traversing the model: (1) our algorithm described in Section~\ref{sec:traversalAlgo} and (2) a basic Depth First Search algorithm (DFS) that covers all edges to serve as a baseline for comparison. On top of our traversal algorithm, each of the optimizations can be turned on or off independently. By traversing the model, \tool{} generates a suite of JUnit\footnote{http://junit.org} tests. The tests use a combination of Robotium\footnote{https://code.google.com/p/robotium} and JUnit to interact with Android~apps.
+Once the model is validated, \tool{} traverses the model using traversal algorithms to generate test suites. \tool{} provides the following options for traversing the model: (1) our algorithm described in Section~\ref{sec:traversalAlgo} and (2) a basic Depth First Search algorithm (DFS) that covers all edges to serve as a baseline for comparison. On top of our traversal algorithm, each of the optimizations can be turned on or off independently. By traversing the model, \tool{} generates a suite of JUnit\footnote{\url{http://junit.org}} tests. The tests use a combination of Robotium\footnote{\url{https://code.google.com/p/robotium}} and JUnit to interact with Android~apps.
 \\
 \indent
 {\bf Step 3:}
 In the generated test suite, \tool{} automatically inserts (1) instrumentation to record views of states, and (2) oracles after exercising each golden edge.
-Recording views of states can be done through various user-interfaces provided by a mobile platform. We experimented with two interfaces from the Android platform: Hierarchy Viewer\footnote{http://developer.android.com/tools/help/hierarchy-viewer.html} and taking graphical snapshots.
+Recording views of states can be done through various user-interfaces provided by a mobile platform. We experimented with two interfaces from the Android platform: Hierarchy Viewer\footnote{\url{http://developer.android.com/tools/help/hierarchy-viewer.html}} and taking graphical snapshots.
 \\
 \indent
 Hierarchy Viewer is a tool for debugging user-interfaces of apps that displays the hierarchy and properties of items on the screen.
