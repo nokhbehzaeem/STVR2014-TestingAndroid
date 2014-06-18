@@ -179,6 +179,6 @@ Table~\ref{table:algoEffectiveness} shows the experimental results. The cost fun
 \input{algoEffectiveness}
 
 {\bf Threats to Validity}: To minimize threats to internal validity, we automated the entire test generation and execution process and manually identified real bugs from false positives. To address external validity, we experimented with 7 previously studied apps and set forth a criterion to choose 6 other popular apps from open source repositories as discussed in Section~\ref{study}. With respect to construct validity, we strictly followed our traversal algorithm and oracle generation techniques, used well-known frameworks Robotium and JUnit, and manually investigated generated tests for some of the apps. 
-%One limitation of this work is synthesizing universally applicable oracles, which gives rise to false positives.
-%General purpose oracles are often either too weak to generate bugs or generate too many false positives. We are mitigating that short-coming by using domain specific knowledge. 
+One limitation of this work is synthesizing universally applicable oracles, which gives rise to false positives.
+General purpose oracles are often either too weak to detect bugs or generate too many false positives. We are mitigating that short-coming by using domain specific knowledge. 
 
