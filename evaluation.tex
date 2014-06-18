@@ -45,23 +45,116 @@ and bugs in the last two columns.
 email after searching the inbox for some time, but while reading the
 email he receives a phone call (which pauses K9Mail). After the phone
 call is over, K9Mail resumes, but back to the inbox, requiring to perform the
-search again.
-\\
-\indent{\bf Killing and restarting bug in K9Mail}: The operating system decides to kill K9Mail because of low memory while the user is composing an email. K9Mail fails to save the email as a draft, deleting the contents of the email.
-\\
-\indent{\bf Rotation bug in Kitchen Timer}: Explained in Section~\ref{example}.
-\\
-\indent{\bf Rotation bug in OpenSudoku}: Rotating the device closes the custom pop up for entering numbers and discards them.
-\\
-\indent{\bf Rotation bug in VuDroid}: Rotation clears tab selection. 
-\\
-\indent{\bf Rotation bug in Nexes Manager}: If there is an empty folder which has no permission (read, write, etc.), rotating the device makes the folder icon disappear.
-\\
-\indent{\bf Back button bug in Kitchen Timer}: Going to sub-menus and coming back makes buttons go out of focus.
+search again. Figure~\ref{fig:bug19} depicts this bug. We reported this bug as issue 5926 to K9Mail.
+\begin{figure*}[!t]
+\centering
+\begin{minipage}{.8\columnwidth}
+%0.225=0.18/0.8
+\subfloat[An open email.]{\includegraphics[width=0.225\columnwidth]{figures/bug19/bug19_shot1.jpg}
+}
+\hfill
+\subfloat[A phone call pauses K9Mail.]{\includegraphics[width=0.225\columnwidth]{figures/bug19/bug19_shot2.jpg}
+}
+\hfill
+\subfloat[K9Mail resumes to the inbox instead of the email.]{\includegraphics[width=0.225\columnwidth]{figures/bug19/bug19_shot3.jpg}
+}
+\caption{Pausing and Resuming Bug in K9Mail.}
+\label{fig:bug19}
+\end{minipage}
+\end{figure*}
 
-We found two of these bugs already reported and accepted in the bug repositories of the corresponding apps. All the other bugs were new.
-We reported these to the respective developers and are awaiting confirmation of the bugs from them. 
-%out of which we reported several. %5 bugs reported
+\indent{\bf Killing and restarting bug in K9Mail}: The operating system decides to kill K9Mail because of low memory while the user is composing an email. K9Mail fails to save the email as a draft, deleting the contents of the email (Figure~\ref{fig:bug17}). We found this bug already reported as issue 161.
+\begin{figure*}[!t]
+\centering
+\begin{minipage}{.8\columnwidth}
+%0.225=0.18/0.8
+\subfloat[Initially no drafts saved.]{\includegraphics[width=0.225\columnwidth]{figures/bug17/bug17_shot1.jpg}
+}
+\hfill
+\subfloat[While composing an email, the OS kills K9Mail.]{\includegraphics[width=0.225\columnwidth]{figures/bug17/bug17_shot2.jpg}
+}
+\hfill
+\subfloat[K9Mail fails to save a draft.]{\includegraphics[width=0.225\columnwidth]{figures/bug17/bug17_shot3.jpg}
+}
+\caption{Killing and Restarting Bug in K9Mail.}
+\label{fig:bug17}
+\end{minipage}
+\end{figure*}
+
+\indent{\bf Rotation bug in Kitchen Timer}: Explained in Section~\ref{example}. We reported this bug as issue 147 to Kitchen Timer.
+\\
+\indent{\bf Rotation bug in OpenSudoku}: Rotating the device closes the custom pop up for entering numbers and discards them (Figure~\ref{fig:bug25}). We reported this bug as issue 175 to OpenSudoku.
+\begin{figure*}[!t]
+\centering
+\begin{minipage}{.8\columnwidth}
+%0.225=0.18/0.8
+\subfloat[Before entering numbers.]{\includegraphics[width=0.225\columnwidth]{figures/bug25/bug25_shot1.jpg}
+}
+\hfill
+\subfloat[Pop up for entering multiple numbers.]{\includegraphics[width=0.225\columnwidth]{figures/bug25/bug25_shot2.jpg}
+}
+\hfill
+\subfloat[Entered numbers discarded after two rotations.]{\includegraphics[width=0.225\columnwidth]{figures/bug25/bug25_shot3.jpg}
+}
+\caption{Rotation Bug in OpenSudoku.}
+\label{fig:bug25}
+\end{minipage}
+\end{figure*}
+
+\indent{\bf Rotation bug in VuDroid}: Rotation clears tab selection. As Figure~\ref{fig:bug9} displays, the default tab is the Browse tab. If the user selects the Recent tab and then rotates the device, the tab selection is rolled back to the default Browse tab. We found this bug already reported and accepted as issue 7.
+\begin{figure*}[!t]
+\centering
+\begin{minipage}{.8\columnwidth}
+%0.225=0.18/0.8
+\subfloat[Browse is the default tab.]{\includegraphics[width=0.225\columnwidth]{figures/bug9/bug9_shot1.jpg}
+}
+\hfill
+\subfloat[Selecting the Recent tab.]{\includegraphics[width=0.225\columnwidth]{figures/bug9/bug9_shot2.jpg}
+}
+\hfill
+\subfloat[Tab selection cleared after two rotations.]{\includegraphics[width=0.225\columnwidth]{figures/bug9/bug9_shot3.jpg}
+}
+\caption{Rotation Bug in VuDroid.}
+\label{fig:bug9}
+\end{minipage}
+\end{figure*}
+
+\indent{\bf Rotation bug in Nexes Manager}: If there is an empty folder which has no permission (read, write, etc.), rotating the device makes the folder icon disappear (Figure~\ref{fig:bug10}). We reported this bug as issue 9 to Nexes Manager.
+\begin{figure*}[!t]
+\centering
+\begin{minipage}{.5\columnwidth}
+%0.36=0.18/0.5
+\subfloat[The ``vendor'' folder is empty and has no permission.]{\includegraphics[width=0.36\columnwidth]{figures/bug10/bug10_shot1.jpg}
+}
+\hfill
+\subfloat[The icon beside ``vendor'' disappears after two rotations.]{\includegraphics[width=0.36\columnwidth]{figures/bug10/bug10_shot2.jpg}
+}
+\caption{Rotation Bug in Nexes Manager.}
+\label{fig:bug10}
+\end{minipage}
+\end{figure*}
+
+\indent{\bf Back button bug in Kitchen Timer}: Going to sub-menus and coming back using the hardware Back makes buttons go out of focus. Figure~\ref{fig:bug23} shows how the plus ($+$) button is in focus, but it goes out of focus if the user navigates to the info sub-menu and then comes back using the hardware Back button. We reported this bug as issue 168 to Kitchen Timer.
+
+\begin{figure*}[!t]
+\centering
+\subfloat[The $+$ button in focus.]{\includegraphics[width=0.18\columnwidth]{figures/bug23/bug23_shot1.jpg}
+}
+\hfill
+\subfloat[Navigating to Menu.]{\includegraphics[width=0.18\columnwidth]{figures/bug23/bug23_shot2.jpg}
+}
+\hfill
+\subfloat[Navigating to Menu/Info.]{\includegraphics[width=0.18\columnwidth]{figures/bug23/bug23_shot3.jpg}
+}
+\hfill
+\subfloat[Using the hardware Back button. $+$ goes out of focus.]{\includegraphics[width=0.18\columnwidth]{figures/bug23/bug23_shot4.jpg}
+}
+\caption{Back Button Bug in Kitchen Timer.}
+\label{fig:bug23}
+\end{figure*}
+
+Besides the two bugs that we found already reported in the bug repositories of the corresponding apps, mentioned above as issue 7 of VuDroid and issue 161 of K9Mail, we found another pausing and resuming bug in K9Mail that was independently fixed in version 4.511. All the other \NumBugs{} bugs that \tool{} found were new.
+We reported these to the respective developers (e.g., issue 121 of VuDroid, issue 5927 of K9Mail, in addition to the issues listed above) and are awaiting confirmation of the bugs from them. 
 %However, we have not yet heard back from developers regarding the reports. 
 
 \tool{} reported a total of $9$ distinct false positives. However, $4$ of these false positives were because of an inconsistency in the Android testing instrumentation, which caused it to act differently when paused programmatically (by tests) or through the emulator GUI (when manually confirming bugs). Another $2$ false positives were because of time sensitivity of some app states. For instance, when a timer is running in Kitchen Timer, rotation changes timer values, not because there is a bug, but rather because the state of a running timer changes with time. Such time sensitivity is usually abstracted out from the app's GUI model to achieve conciseness. Another $2$ false positives manifested because if the app GUI provides a visual back button on the screen, hitting this visual button and then the hardware Back button does not take the app to the original state. The remaining $1$ false positive could be considered a bug, depending on the intent of the app designer.
