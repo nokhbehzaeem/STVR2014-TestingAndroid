@@ -10,7 +10,7 @@ The $\NumAppsStudy$ open-source Android apps we selected %mostly form Google Cod
 included $6$ apps studied in previously published work on automated testing for mobile apps~\cite{Hu:2011:AST,AmalfitanoASE2012,Nguyen:2012:ISSTA}, a further $6$ apps selected from the open source repository Google Code, and the \textit{Notepad} sample app provided for educational purposes by the official Android website (also studied in previous work~\cite{Nguyen:2012:ISSTA}). Table~\ref{tab:studySubjects} lists the name, stated function, and source for each of the $\NumAppsStudy$ subjects.
 
 \begin{table}
-\caption{Subjects for Bug Study}
+\caption{Subjects for Bug Study.}
 \label{tab:studySubjects}
 \begin{center}
 \begin{tabular}{lll}
@@ -41,7 +41,34 @@ gc: \url{https://code.google.com/p}
 
 %% Test Subject Selection
 Our aim was to choose test subjects from a diverse set of application categories and functions. The $6$ apps CMIS, Delicious, OpenSudoku, MonolithAndroid, Wordpress, and Nexes Manager, chosen from previously published work, reflect this intention. Further, we applied the following five additional criteria to choose the $6$ apps from open source repositories: (1) popularity: a minimum ranking of 3.5 out of 5 on Google Play, 
-(2) high number of active installations: a minimum of $50{,}000$, (3) having active development communities: the latest version of the source of the application should have been downloaded at least $1000$ times, (4) rich database of reported issues: at least $25$ reported issues, and (5) reproducible defects: the app should have at least some defects reproducible on a standard Android emulator. Similar criteria have been used in previous studies of Android apps~\cite{Hu:2011:AST}, albeit for somewhat different purposes. By manually browsing Google Code with the above selection protocol we selected the $6$ apps VuDroid, Kitchen Timer, Dolphin Player, AnkiDroid, Shuffle, and  K9Mail which have on average a ranking $4.3$ out of $5$, $500{,}000$ active installations, $10{,}700$ downloads, and $1{,}400$ reported issues. 
+(2) high number of active installations: a minimum of $50{,}000$, (3) having active development communities: the latest version of the source of the application should have been downloaded at least $1000$ times, (4) rich database of reported issues: at least $25$ reported issues, and (5) reproducible defects: the app should have at least some defects reproducible on a standard Android emulator. Similar criteria have been used in previous studies of Android apps~\cite{Hu:2011:AST}, albeit for somewhat different purposes. By manually browsing Google Code with the above selection protocol we selected the $6$ apps VuDroid, Kitchen Timer, Dolphin Player, AnkiDroid, Shuffle, and  K9Mail which have on average a ranking $4.3$ out of $5$, $500{,}000$ active installations, $10{,}700$ downloads, and $1{,}400$ reported issues. Table~\ref{tab:subjectStats} shows the statistics for all the subject apps.
+
+\begin{table}
+\caption{Statistics of Subjects for Bug Study.}
+\label{tab:subjectStats}
+\begin{center}
+\begin{tabular}{ll@{}rrl@{}r}
+\toprule
+\textbf{App} & \textbf{Category} & \textbf{Ranking} & \textbf{\#Downloads} & \textbf{\#Installations} & \textbf{\#Issues} \\
+\midrule
+\textit{Notepad}&Tools&N/A&N/A&N/A&0\\
+\textit{CMIS}&Tools&4.6&7002&10,000 - 50,000&31\\
+\textit{Delicious}&Social&3.7&3883&10,000 - 50,000&16\\
+\textit{OpenSudoku}&Brain and Puzzle&4.6&35136&1,000,000 - 5,000,000&174\\
+\textit{MonolithAndroid}&N/A&N/A&15623&N/A&12\\
+\textit{Wordpress} &Social&4.2&N/A&1,000,000 - 5,000,000&535\\
+\textit{Nexes Manager}&Productivity&4.3&N/A&50,000 - 100,000&6\\
+\midrule
+\textit{VuDroid} &Tools&3.9&42725&100,000 - 500,000&121\\
+\textit{Kitchen Timer} &Tools&4.4&N/A&1,000,000 - 5,000,000&149\\
+\textit{Dolphin Player}&Entertainment&4.3&4709&100,000 - 500,000&36\\
+\textit{AnkiDroid}&Education&4.5&1013&500,000 - 1,000,000&1847\\
+\textit{Shuffle} &Productivity&4.4&3898&50,000 - 100,000&322\\
+\textit{K9Mail}&Communication&4.3&1618&1,000,000 - 5,000,000&5977\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
 
 %We then diversified the categories of apps while choosing open-source popular apps (aiming for a minimum ranking of 3.5 out of 5). We considered 20 other apps selected randomly from Google Code, manually filtered out apps for which we could not reproduce bugs, and selected the followings: VuDroid\footnote{https://code.google.com/p/vudroid} is a PDF viewer, Kitchen Timer\footnote{https://code.google.com/p/kitchentimer} is a timer, Dolphin Player\footnote{https://code.google.com/p/dolphin-player} is a media player, AnkiDroid\footnote{https://code.google.com/p/ankidroid} is a flashcard reviewing application, Shuffle\footnote{https://code.google.com/p/android-shuffle} is an organizational tool, and Nexes\footnote{https://github.com/nexes/Android-File-Manager} is a file manager. Furthermore, we used Notepad\footnote{http://developer.android.com/tools/samples/index.html}, a sample app used for educational purposes by the official Android website.
 
