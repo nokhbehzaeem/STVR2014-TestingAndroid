@@ -97,3 +97,13 @@ This paper makes the following contributions:
           applications: \tool{} found a total of $\NumBugs$ bugs, 
           a few of them particularly serious, using a total of $\NumTests$ tests for these $\NumApps$ apps.
 %\end{itemize}
+
+The research described in this paper was first reported in \cite{quantum:ICST2013}. This journal version of that work
+extends our original paper in several ways. First, the bug study described in the next section has been augmented with 
+more details of the subject apps (Table~\ref{tab:subjectStats}) and a deeper analysis of the bugs found during the 
+study. Second, we include a formal proof of the NP-Completeness of the test suite generation problem addressed in this
+paper (Section~\ref{sec:traversalAlgo}) and a more complete description of the image differencing algorithm used in our \tool tool, to realize the
+test oracles (Listing~\ref{lst:imageComparison}). We also include a substantially expanded discussion on the bugs 
+discovered through the use of \tool, on real apps, complete with screenshots of the key bugs (Figures~\ref{fig:bug19}-\ref{fig:bug23})
+and follow-up activity with the developers to report and confirm those bugs.
+Finally, the discussion in Section~ref{evaluation}, on the possible threats to validity of our research results, has also been enhanced.
